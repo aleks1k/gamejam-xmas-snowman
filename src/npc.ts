@@ -98,6 +98,9 @@ export class SnowmanNPC extends NPC {
         {
             name: '4_1_start_game',
             text: 'Take snowball!',
+            triggeredByNext: () => {
+                this.takeHandler();
+            },
             isEndOfDialog: true,
         },
         {
@@ -115,8 +118,9 @@ export class SnowmanNPC extends NPC {
     submittedText: string = ''
     active = true
     state : number | string = 0
+    private takeHandler: any;
 
-    constructor(position: TranformConstructorArgs) {
+    constructor(position: TranformConstructorArgs, takeHandler) {
         super(
             position,
             'models/snowman.glb',
@@ -128,6 +132,8 @@ export class SnowmanNPC extends NPC {
                 reactDistance: 3,
                 continueOnWalkAway: true
             })
+
+        this.takeHandler = takeHandler
     }
 
     hide() {
