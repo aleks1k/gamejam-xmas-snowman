@@ -19,6 +19,6 @@ const input = Input.instance
 input.subscribe("BUTTON_DOWN", ActionButton.SECONDARY, false, (e) => {
   snowball.toggle()
 })
-input.subscribe("BUTTON_DOWN", ActionButton.PRIMARY, false, (e) => {
+input.subscribe("BUTTON_DOWN", ActionButton.POINTER, false, (e) => {
   snowball.fire()
 })
