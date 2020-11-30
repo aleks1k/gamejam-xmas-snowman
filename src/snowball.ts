@@ -1,5 +1,6 @@
 import utils from "../node_modules/decentraland-ecs-utils/index"
 import {Weapon} from "./weapon";
+import {WeaponComponent} from "./WeaponComponent";
 
 const camera = Camera.instance
 
@@ -72,7 +73,7 @@ export class Snowball extends Weapon implements ISystem {
     }
 
     fire() {
-        if (this.isFly) {
+        if (!this.getComponent(WeaponComponent).attached || this.isFly) {
             return
         }
         if (this.getParent() != this.fireBase) {
