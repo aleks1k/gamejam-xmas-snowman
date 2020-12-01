@@ -8,8 +8,6 @@ export interface ISceneUIEvent {
 
 export class PlayerUI {
     private uiPlayAgain: UIImage
-    private uiBackGround: UIImage
-    private uiBackMenu: UIImage
     private uiGameOver: UIImage
     private canvas: UICanvas
     private uiEventHandler: ISceneUIEvent
@@ -35,16 +33,6 @@ export class PlayerUI {
     }
 
     private initMenu() {
-        this.uiBackMenu = new UIImage(this.canvas, new Texture("textures/menu.png"))
-        this.uiBackMenu.width = "800"
-        this.uiBackMenu.height = "500"
-        this.uiBackMenu.sourceWidth = 800
-        this.uiBackMenu.sourceHeight = 500
-        this.uiBackMenu.positionY = 0
-        this.uiBackMenu.hAlign = "center"
-        this.uiBackMenu.vAlign = "center"
-        this.uiBackMenu.visible = false
-
         this.endGameBtn = new UIImage(this.canvas, new Texture("textures/uiClose.png"))
         this.endGameBtn.width = "160"
         this.endGameBtn.height = "40"
@@ -153,14 +141,6 @@ export class PlayerUI {
     }
 
     public initGameOverUI() {
-        this.uiBackGround = new UIImage(this.canvas, new Texture("textures/bgRed.png"))
-        this.uiBackGround.width = "100%"
-        this.uiBackGround.height = "100%"
-        this.uiBackGround.sourceWidth = 1
-        this.uiBackGround.sourceHeight = 1
-        this.uiBackGround.positionY = 0
-        this.uiBackGround.vAlign = "bottom"
-        this.uiBackGround.visible = false
 
         this.uiGameOver = new UIImage(this.canvas, new Texture("textures/gameover.png"))
         this.uiGameOver.width = "462"
@@ -236,23 +216,18 @@ export class PlayerUI {
     }
 
     public kill() {
-        // this.showHighscore([])
-        // this.uiBackGround.visible = true
         this.uiGameOver.visible = true
-        // this.uiPlayAgain.visible = true
     }
 
     private reset() {
         this.uiPlayAgain.visible = false
         this.uiGameOver.visible = false
-        this.uiBackGround.visible = false
         this.uiEventHandler.onRestart()
         log("PLAY AGAIN")
     }
 
     closeMenu() {
         this.isOpenedMenu = !this.isOpenedMenu
-        this.uiBackMenu.visible = !this.uiBackMenu.visible
         this.menuBtn.visible = !this.menuBtn.visible
         this.closeBtn.visible = !this.closeBtn.visible
         this.discordBtn.visible = !this.discordBtn.visible
@@ -261,7 +236,6 @@ export class PlayerUI {
     private endGame() {
         this.uiPlayAgain.visible = true
         this.uiGameOver.visible = false
-        this.uiBackGround.visible = false
         this.uiEventHandler.onEndGame()
     }
 }
