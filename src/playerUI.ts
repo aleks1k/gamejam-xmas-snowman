@@ -220,7 +220,8 @@ export class PlayerUI {
     }
 
     private reset() {
-        this.uiPlayAgain.visible = false
+        this.closeBtn.visible = true
+        // this.uiPlayAgain.visible = false
         this.uiGameOver.visible = false
         this.uiEventHandler.onRestart()
         log("PLAY AGAIN")
@@ -234,7 +235,8 @@ export class PlayerUI {
     }
 
     private endGame() {
-        this.uiPlayAgain.visible = true
+        this.closeBtn.visible = false
+        // this.uiPlayAgain.visible = true
         this.uiGameOver.visible = false
         this.uiEventHandler.onEndGame()
     }

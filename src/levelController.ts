@@ -36,7 +36,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     }
 
     onEndGame() {
-        this.restart()
+        this.endGame()
     }
 
     onHit(p: Enemy, pos: any) {
@@ -116,6 +116,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     endGame() {
         this.factory.reset()
         this.state = GameState.NotStarted
+        this.eventHandler.onExit()
     }
 
     update(dt: number) {

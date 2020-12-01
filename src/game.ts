@@ -3,7 +3,7 @@ import {Snowball} from "./snowball";
 import {SnowmanNPC} from "./npc";
 import {AnimationPicture} from "./animationPicture";
 import {LevelController} from "./levelController";
-import {movePlayerTo} from "@decentraland/RestrictedActions";
+import {PlayerSpawn} from "./playerSpawn";
 
 engine.addEntity(static_scene)
 
@@ -135,13 +135,19 @@ const transformRobot = new Transform({
 robot.addComponentOrReplace(transformRobot)
 engine.addEntity(robot)
 
+let playerSpawn = new PlayerSpawn();
+
 const gameController = new LevelController(new class implements IGameEvents {
     onEnd(level: number, score: number) {
+        snowball.drop()
         npc.show()
+        playerSpawn.release()
     }
 
     onExit() {
+        snowball.drop()
         npc.show()
+        playerSpawn.release()
     }
 
     onFire() {
@@ -156,30 +162,11 @@ const gameController = new LevelController(new class implements IGameEvents {
 
     onStart() {
         npc.hide()
-
-        ///////// ДЛЯ ТЕСТА КОЛЛАЙДЕРА //////////
-        ///// сейчас есть проблема в том, что телепорт раньше срабатывает, чем появляется коллайдер
-        ///// надо коллайдер заранее инициализировать, иначе выбежать удается после телепортирования
-
-        const snowfortCollider = new Entity()
-
-        const transform130 = new Transform({ //трнсформ для коллайдера можно брать из static.ts (snowFort, snowFort2, snowFort3)
-            position: new Vector3(19.5, 0, 6),
-            rotation: new Quaternion(-8.300713665954172e-15, -0.9951847791671753, 1.1863526339084274e-7, -0.09801724553108215),
-            scale: new Vector3(3, 3, 3)
-        })
-        snowfortCollider.addComponentOrReplace(transform130)
-        const gltfShape80 = new GLTFShape("models/static/snowFortCollider.glb")
-        gltfShape80.withCollisions = true
-        gltfShape80.isPointerBlocker = false
-        gltfShape80.visible = true
-        snowfortCollider.addComponentOrReplace(gltfShape80)
-        engine.addEntity(snowfortCollider)
-
-        movePlayerTo({ x: 19.5, y: 0, z: 6 }, { x: 8, y: 1, z: 8 })
-
-        /// КОНЕЦ ДЛЯ ТЕСТА КОЛЛАЙДЕРА ///
-        //////////////////////////////////
+        playerSpawn.spawn()
     }
 })
 engine.addSystem(gameController)
+
+Input.instance.subscribe("BUTTON_DOWN", ActionButton.SECONDARY, false, (e) => {
+    log('USER POSITION: ', Camera.instance.position)
+})
