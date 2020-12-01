@@ -80,7 +80,7 @@ export class Snowball extends Weapon implements ISystem {
 
         const transform130 = new Transform({ //трнсформ для коллайдера можно брать из static.ts (snowFort, snowFort2, snowFort3) 
             position: new Vector3(19.5, 0, 6),
-            rotation: new Quaternion(-8.3, -0.99, 1.18, -0.098),
+            rotation: new Quaternion(-8.300713665954172e-15, -0.9951847791671753, 1.1863526339084274e-7, -0.09801724553108215),
             scale: new Vector3(3, 3, 3)
         })
         snowfortCollider.addComponentOrReplace(transform130)
