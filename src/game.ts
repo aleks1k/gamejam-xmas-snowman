@@ -26,11 +26,48 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, false, (e) => {
 
 const npc = new SnowmanNPC({
   position: new Vector3(23.5, 0, 4),
-  rotation: new Quaternion(-1.10062582369541e-15, 0.6343932747840881, -7.562556447737734e-8, 0.7730104327201843),
+  rotation:  Quaternion.Euler(0,-90,0),
   scale: new Vector3(2.5000030994415283, 2.5, 2.5000030994415283)
 }, () => {
   snowball.take()
 })
+
+
+
+const myVideoClip = new VideoClip(
+  "models/static/eyes.mp4"
+)
+
+// #2
+const myVideoTexture = new VideoTexture(myVideoClip)
+
+// #3
+const myMaterial = new BasicMaterial()
+myMaterial.texture = myVideoTexture
+
+// #4
+const screen = new Entity()
+screen.addComponent(new PlaneShape())
+screen.addComponent(
+  new Transform({
+    position: new Vector3(-0.03, 0.68, 0.1),
+    scale: new Vector3 (0.13, 0.04, 0.13)
+  })
+)
+screen.addComponent(myMaterial)
+screen.addComponent(
+  new OnPointerDown(() => {
+    myVideoTexture.playing = !myVideoTexture.playing
+  })
+)
+
+screen.setParent(npc)
+
+// #5
+myVideoTexture.playing = true
+myVideoTexture.loop = true
+
+
 //
 //
 // const snowman = new Entity('snowman')
