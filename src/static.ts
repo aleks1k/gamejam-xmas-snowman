@@ -822,45 +822,4 @@ gltfShape37.visible = true
 enemyUfoRed.addComponentOrReplace(gltfShape37)
 
 
-const eggShape = new GLTFShape("models/static/egg.glb")
-const egg1 = new Entity()
-egg1.setParent(static_scene)
-egg1.addComponentOrReplace(eggShape)
-const transformEgg1 = new Transform({
-    position: new Vector3(19.5, 1.8, 28.8),
-    rotation: new Quaternion(0, 0, 0, 1),
-    scale: new Vector3(2, 2, 2)
-})
-egg1.addComponentOrReplace(transformEgg1)
-egg1.addComponent(
-    new OnPointerDown(
-        (e) => {
-            openExternalURL("https://discord.gg/8AKYpEj")
-        },
-        {   button: ActionButton.ANY,
-            showFeedback: true,
-            hoverText: "GO TO DISCORD" }
-      )
-  )
-
-const egg2 = new Entity()
-egg2.setParent(static_scene)
-egg2.addComponentOrReplace(eggShape)
-const transformEgg2 = new Transform({
-    position: new Vector3(9, 1.8, 28.8),
-    rotation: new Quaternion(0, 0, 0, 1),
-    scale: new Vector3(2, 2, 2)
-})
-egg2.addComponentOrReplace(transformEgg2)
-egg2.addComponent(
-    new OnPointerDown(
-        (e) => {
-            openExternalURL("https://discord.gg/8AKYpEj")
-        },
-        {   button: ActionButton.ANY,
-            showFeedback: true,
-            hoverText: "GO TO DISCORD" }
-      )
-  )
-
 
