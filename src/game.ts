@@ -1,6 +1,7 @@
 import {static_scene} from "./static";
 import {Snowball} from "./snowball";
 import {SnowmanNPC} from "./npc";
+import {AnimationPicture} from "./animationPicture";
 
 engine.addEntity(static_scene)
 
@@ -32,41 +33,13 @@ const npc = new SnowmanNPC({
   snowball.take()
 })
 
-
-
-const myVideoClip = new VideoClip(
-  "textures/eyes.mp4"
-)
-
-// #2
-const myVideoTexture = new VideoTexture(myVideoClip)
-
-// #3
-const myMaterial = new BasicMaterial()
-myMaterial.texture = myVideoTexture
-
-// #4
-const screen = new Entity()
-screen.addComponent(new PlaneShape())
-screen.addComponent(
-  new Transform({
+const screen = new AnimationPicture("textures/eyesSprites.png", 14, 2,{
     position: new Vector3(-0.03, 0.68, 0.1),
     scale: new Vector3 (0.13, 0.04, 0.13)
-  })
-)
-screen.addComponent(myMaterial)
-screen.addComponent(
-  new OnPointerDown(() => {
-    myVideoTexture.playing = !myVideoTexture.playing
-  })
-)
-
+})
+engine.addEntity(screen)
+engine.addSystem(screen)
 screen.setParent(npc)
-
-// #5
-myVideoTexture.playing = true
-myVideoTexture.loop = true
-
 
 const eggShape = new GLTFShape("models/egg.glb")
 const egg1 = new Entity()
@@ -107,17 +80,4 @@ egg2.addComponent(
             hoverText: "GO TO DISCORD" }
       )
   )
-  engine.addEntity(egg2)
-
-
-//
-//
-// const snowman = new Entity('snowman')
-// snowman.setParent(static_scene)
-// const transform12 = new Transform()
-// snowman.addComponentOrReplace(transform12)
-// const gltfShape7 = new GLTFShape("models/static/snowman.glb")
-// gltfShape7.withCollisions = true
-// gltfShape7.isPointerBlocker = true
-// gltfShape7.visible = true
-// snowman.addComponentOrReplace(gltfShape7)
+engine.addEntity(egg2)
