@@ -41,45 +41,24 @@ export class SnowmanNPC extends NPC {
             name: '5_wish',
             text: 'Enter wish and click button',
             triggeredByNext: () => {
-                this.fillInCanvas = new UIInputText(this.dialog.container)
-                this.fillInCanvas.height = 60
-                this.fillInCanvas.width = 400
-                this.fillInCanvas.hTextAlign = 'center'
-                this.fillInCanvas.vTextAlign = 'center'
-                this.fillInCanvas.fontSize = 15
-                this.fillInCanvas.color = Color4.Gray()
-                this.fillInCanvas.onTextSubmit = new OnTextSubmit(() => {
-                    log(this.submittedText)
-                    this.fillInCanvas.visible = false
-                    this.endInteraction()
-                    this.sendToSanta(this.submittedText)
-                })
-
-                this.fillInCanvas.onChanged = new OnChanged((x) => {
-                    this.submittedText = x.value
-                })
+                this.showInputText()
             },
         },
         {
             text: `Enter wish:`,
             offsetY: 50,
             triggeredByNext: () => {
-                this.fillInCanvas.visible = false
-                log(this.submittedText)
+                this.hideInputText()
             },
             isQuestion: true,
             buttons: [
                 {
                     label: `Send`, goToDialog: '5_1_sign_wait',
                     triggeredActions: () => {
-                        this.fillInCanvas.visible = false
-                        log(this.submittedText)
-                        // myNPC.endInteraction()
-                        this.sendToSanta(this.submittedText)
+                        this.textSubmit()
                     }
                 },
-            ],
-            // isEndOfDialog: true,
+            ]
         },
         {
             name: '5_1_sign_wait',
@@ -169,7 +148,35 @@ export class SnowmanNPC extends NPC {
         }
     }
 
-    private sendToSanta(submittedText: string) {
+    onTextSubmit(text:string) {
+        log(text)
+    }
 
+    showInputText() {
+        this.fillInCanvas = new UIInputText(this.dialog.container)
+        this.fillInCanvas.height = 60
+        this.fillInCanvas.width = 400
+        this.fillInCanvas.hTextAlign = 'center'
+        this.fillInCanvas.vTextAlign = 'center'
+        this.fillInCanvas.fontSize = 15
+        this.fillInCanvas.color = Color4.Gray()
+        this.fillInCanvas.onTextSubmit = new OnTextSubmit(() => {
+            this.fillInCanvas.visible = false
+            this.endInteraction()
+            this.onTextSubmit(this.submittedText)
+        })
+
+        this.fillInCanvas.onChanged = new OnChanged((x) => {
+            this.submittedText = x.value
+        })
+    }
+
+    private hideInputText() {
+        this.fillInCanvas.visible = false
+    }
+
+    private textSubmit() {
+        this.hideInputText()
+        this.onTextSubmit(this.submittedText)
     }
 }
