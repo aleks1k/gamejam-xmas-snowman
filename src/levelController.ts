@@ -19,16 +19,19 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     eventHandler: IGameEvents
     dt: number = 0
     level: number = 0
+    stealPresents: number = 0
     addScore = 1
 
     snowmanSpawnPoint = new Vector3(23, 0, 25)
     presentsTargetPoint = new Vector3(5.5, 0, 22)
+    private stealMax: number = 5;
 
     constructor(eventHandler: IGameEvents) {
         this.eventHandler = eventHandler
         this.ui = new GameUI()
         this.sceneUI = new PlayerUI(this)
         this.factory = new EnemyFactory()
+        this.ui.visible(false)
     }
 
     onRestart() {
@@ -46,19 +49,26 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         }
     }
     onSmashPlayer(p: Enemy, position: any) {
-        if (this.isStarted()) {
-            this.ui.health.decrease(1)
-            this.sceneUI.damage()
-            if (this.ui.health.read() <= 0) {
-                this.sceneUI.kill()
-                this.state = GameState.Over
-                this.eventHandler.onEnd(this.level, this.ui.score.read())
-            }
-        }
+        // if (this.isStarted()) {
+        //     this.ui.health.decrease(1)
+        //     this.sceneUI.damage()
+        //     if (this.ui.health.read() <= 0) {
+        //         this.sceneUI.kill()
+        //         this.state = GameState.Over
+        //         this.eventHandler.onEnd(this.level, this.ui.score.read())
+        //     }
+        // }
     }
 
-    onTakePresent() {
-        throw new Error("Method not implemented.");
+    onStealPresentAndRunAway(p: Enemy) {
+        this.stealPresents++
+        this.ui.setPresentCount(this.stealMax - this.stealPresents)
+        log('steal', this.stealPresents)
+        if (this.isStarted() && this.stealPresents >= this.stealMax) {
+            this.sceneUI.kill()
+            this.state = GameState.Over
+            this.eventHandler.onEnd(this.level, this.ui.score.read())
+        }
     }
 
     isStarted() {
@@ -102,7 +112,8 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     }
 
     public restart() {
-        this.ui.health.set(1)
+        // this.ui.health.set(1)
+        this.ui.setPresentCount(this.stealMax)
         this.ui.score.set(0)
         this.level = 0
         this.ui.level.set(this.level)
@@ -111,6 +122,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         this.sceneUI.endGameBtn.visible = true
         this.nextLevel()
         this.eventHandler.onStart()
+        this.ui.visible(true)
     }
 
     endGame() {

@@ -11,7 +11,8 @@ export interface IEnemyEvent {
     onHit(p: Enemy, pos: any);
 
     onSmashPlayer(p: Enemy, position: any);
-    onTakePresent();
+
+    onStealPresentAndRunAway(p: Enemy);
 }
 
 export class Enemy extends Entity {
@@ -126,28 +127,31 @@ export class Enemy extends Entity {
 
     update(dt:number) {
         this.PatrolPath.update(dt)
-        const path = this.getComponent(PathData)
-        if (path.nextPathIndex >= path.path.path.length-1) {
-            if (path.nextPathIndex >= path.path.path.length) {
-                if (!this.runAway) {
-                    // teleport to mars with present
-                    this.runAway = true
-                    this.isLive = false
-                    this.present.setParent(null)
-                    engine.removeEntity(this.present)
-                    this.removeComponent(GLTFShape)
-                }
-            } else {
-                if (!this.stealPresent) {
-                    // steal present
-                    this.present = new Entity('stealPresent')
-                    this.present.addComponent(this.presentShape)
-                    this.present.addComponent(new Transform({
-                        position: new Vector3(0, 2, 0),
-                        scale: new Vector3(1, 1, 1)
-                    }))
-                    this.present.setParent(this)
-                    this.stealPresent = true
+        if (this.isLive) {
+            const path = this.getComponent(PathData)
+            if (path.nextPathIndex >= path.path.path.length - 1) {
+                if (path.nextPathIndex >= path.path.path.length) {
+                    if (!this.runAway) {
+                        // teleport to mars with present
+                        this.runAway = true
+                        this.isLive = false
+                        this.present.setParent(null)
+                        engine.removeEntity(this.present)
+                        this.removeComponent(GLTFShape)
+                        this.handler.onStealPresentAndRunAway(this)
+                    }
+                } else {
+                    if (!this.stealPresent) {
+                        // steal present
+                        this.present = new Entity('stealPresent')
+                        this.present.addComponent(this.presentShape)
+                        this.present.addComponent(new Transform({
+                            position: new Vector3(0, 2, 0),
+                            scale: new Vector3(1, 1, 1)
+                        }))
+                        this.present.setParent(this)
+                        this.stealPresent = true
+                    }
                 }
             }
         }
