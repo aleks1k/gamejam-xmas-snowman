@@ -38,7 +38,7 @@ export class AnimationPicture extends Entity implements ISystem {
             if(++this.currentFrameIndex >= this.frameCount) {
                 this.currentFrameIndex = 0
             }
-            log('next', this.currentFrameIndex)
+            // log('next', this.currentFrameIndex)
             this.getComponent(PlaneShape).uvs = this.setUVS(this.currentFrameIndex)
         } else {
             this.dt += dt

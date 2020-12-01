@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@dcl/npc-utils": "^1.0.5",
+    "@dcl/ui-utils": "^1.5.0",
     "decentraland-ecs-utils": "^1.1.9"
   }
 }

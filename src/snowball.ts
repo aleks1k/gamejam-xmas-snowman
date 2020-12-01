@@ -29,7 +29,7 @@ export class Snowball extends Weapon implements ISystem {
                 scale: new Vector3(1, 1, 1)
             },
             {
-                position: new Vector3(0, -0.25, 0.95),
+                position: new Vector3(0, -0.35, 0.95),
                 rotation: Quaternion.Euler(0, 270, 0),
                 scale: new Vector3(0.4, 0.4, 0.4)
             }
@@ -71,31 +71,7 @@ export class Snowball extends Weapon implements ISystem {
         // this.getComponent(utils.KeepRotatingComponent).stop()
         // this.removeComponent(utils.KeepRotatingComponent)
         super.take()
-
-        ///////// ДЛЯ ТЕСТА КОЛЛАЙДЕРА //////////
-        ///// сейчас есть проблема в том, что телепорт раньше срабатывает, чем появляется коллайдер
-        ///// надо коллайдер заранее инициализировать, иначе выбежать удается после телепортирования
-        
-        const snowfortCollider = new Entity()
-
-        const transform130 = new Transform({ //трнсформ для коллайдера можно брать из static.ts (snowFort, snowFort2, snowFort3) 
-            position: new Vector3(19.5, 0, 6),
-            rotation: new Quaternion(-8.300713665954172e-15, -0.9951847791671753, 1.1863526339084274e-7, -0.09801724553108215),
-            scale: new Vector3(3, 3, 3)
-        })
-        snowfortCollider.addComponentOrReplace(transform130)
-        const gltfShape80 = new GLTFShape("models/static/snowFortCollider.glb")
-        gltfShape80.withCollisions = true
-        gltfShape80.isPointerBlocker = true
-        gltfShape80.visible = true
-        snowfortCollider.addComponentOrReplace(gltfShape80)
-        engine.addEntity(snowfortCollider)
-
-        movePlayerTo({ x: 19.5, y: 0, z: 6 }, { x: 8, y: 1, z: 8 })
-
-        /// КОНЕЦ ДЛЯ ТЕСТА КОЛЛАЙДЕРА ///
-        //////////////////////////////////
-
+        if(this.takeHandler != null) this.takeHandler()
     }
 
     fire() {
@@ -121,7 +97,7 @@ export class Snowball extends Weapon implements ISystem {
             // log('end')
             this.isFly = false
             this.removeComponent(utils.FollowPathComponent)
-            this.getComponent(Transform).position = new Vector3(0, -0.25, 0.95)
+            this.getComponent(Transform).position = this.getComponent(WeaponComponent).attachedTransform.position
             this.setParent(Attachable.FIRST_PERSON_CAMERA)
             // this.setParent(this.fireParent)
             // this.getComponent(Transform).scale.x = 1

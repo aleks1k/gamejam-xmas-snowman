@@ -3,6 +3,15 @@ import { Dialog } from '../node_modules/@dcl/npc-utils/utils/types'
 
 export class SnowmanNPC extends NPC {
     ILoveCats: Dialog[] = [
+        //for debug fast start
+        {
+            name: '4_1_start_game',
+            text: 'Take snowball!',
+            triggeredByNext: () => {
+                this.takeHandler();
+            },
+            isEndOfDialog: true,
+        },
         {
             name: '1_start',
             text: 'Hello Dear Metaverse Traveller!'
