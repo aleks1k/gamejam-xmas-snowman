@@ -120,9 +120,9 @@ treepine2.addComponentOrReplace(transform10)
 const rockformationmedium = new Entity('rockformationmedium')
 rockformationmedium.setParent(static_scene)
 const transform11 = new Transform({
-    position: new Vector3(23, 0, 7),
+    position: new Vector3(25, 0, 5),
     rotation: new Quaternion(0, 0, 0, 1),
-    scale: new Vector3(2.5, 2.5, 2.5)
+    scale: new Vector3(1.5, 1.5, 1.5)
 })
 rockformationmedium.addComponentOrReplace(transform11)
 const gltfShape6 = new GLTFShape("models/static/rockFormationMedium.glb")

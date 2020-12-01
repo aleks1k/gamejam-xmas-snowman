@@ -1,3 +1,5 @@
 /bin/
 /node_modules/
 /.idea/
+models/.DS_Store
+.DS_Store
