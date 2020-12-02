@@ -20,6 +20,12 @@ export class LotteryNPC extends NPCBase {
             buttons: [
                 {label: `Yes`, goToDialog: 'amount_tickets'},
                 {label: `No`, goToDialog: 'no_matic_mana'},
+                {
+                    label: `View terms`, goToDialog: 'buy_tickets',
+                    triggeredActions: () => {
+                        openExternalURL('https://dapp-craft.com/xmas-lottery-terms')
+                    }
+                },
             ]
         },
         {
