@@ -91,23 +91,23 @@ egg2.addComponent(
 engine.addEntity(egg2)
 
 
-
-const santa = new Entity()
-santa.addComponentOrReplace(new GLTFShape("models/santa.glb"))
-const transformSanta = new Transform({
-  position: new Vector3(6.5, 0.05, 4),
-  rotation: Quaternion.Euler(0,-200,0),
-  scale: new Vector3(10, 12, 10)
+const lotteryScene = new Entity()
+const transform70 = new Transform({
+  position: new Vector3(7.5, 0, 4.5),
+  rotation: new Quaternion(0, 0, 0, 1),
+  scale: new Vector3(1, 1, 1)
 })
-santa.addComponentOrReplace(transformSanta)
-engine.addEntity(santa)
+lotteryScene.addComponentOrReplace(transform70)
+lotteryScene.addComponentOrReplace(new GLTFShape("models/lottery.glb"))
+engine.addEntity(lotteryScene)
+
 
 
 const santaD = new Entity()
 santaD.addComponentOrReplace(new GLTFShape("models/santaDancing.glb"))
 const transformSantaD = new Transform({
   position: new Vector3(4.5, 0.05, 4),
-  rotation: Quaternion.Euler(0,-200,0),
+  rotation: Quaternion.Euler(0,90,0),
   scale: new Vector3(10, 12, 10)
 })
 santaD.addComponentOrReplace(transformSantaD)
@@ -117,8 +117,8 @@ engine.addEntity(santaD)
 const santaW = new Entity()
 santaW.addComponentOrReplace(new GLTFShape("models/santaWaiting.glb"))
 const transformSantaW = new Transform({
-  position: new Vector3(8.5, 0.05, 4),
-  rotation: Quaternion.Euler(0,-200,0),
+  position: new Vector3(4.5, 0.05, 6),
+  rotation: Quaternion.Euler(0,90,0),
   scale: new Vector3(10, 12, 10)
 })
 santaW.addComponentOrReplace(transformSantaW)
