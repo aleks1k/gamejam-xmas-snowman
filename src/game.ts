@@ -1,10 +1,11 @@
 import {static_scene} from "./static";
 import {Snowball} from "./snowball";
-import {SnowmanNPC} from "./npc";
+import {SnowmanNPC} from "./snowmanNPC";
 import {AnimationPicture} from "./animationPicture";
 import {LevelController} from "./levelController";
 import {PlayerSpawn} from "./playerSpawn";
 import {MaticNPC} from "./maticNPC";
+import {LotteryNPC} from "./lotteryNPC";
 
 engine.addEntity(static_scene)
 
@@ -30,7 +31,7 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, false, (e) => {
   snowball.fire()
 })
 
-const npc = new SnowmanNPC({
+const snowmanNPC = new SnowmanNPC({
   position: new Vector3(23.5, 0, 4),
   rotation: Quaternion.Euler(0, -90, 0),
   scale: new Vector3(2.5000030994415283, 2.5, 2.5000030994415283)
@@ -38,13 +39,13 @@ const npc = new SnowmanNPC({
   snowball.take()
 })
 
-const screen = new AnimationPicture("textures/eyesSprites.png", 14, 2,{
+const snowmanEyes = new AnimationPicture("textures/eyesSprites.png", 14, 2,{
     position: new Vector3(-0.03, 0.68, 0.1),
     scale: new Vector3 (0.13, 0.04, 0.13)
 })
-engine.addEntity(screen)
-engine.addSystem(screen)
-screen.setParent(npc)
+engine.addEntity(snowmanEyes)
+engine.addSystem(snowmanEyes)
+snowmanEyes.setParent(snowmanNPC)
 
 const eggShape = new GLTFShape("models/egg.glb")
 const egg1 = new Entity()
@@ -102,28 +103,12 @@ lotteryScene.addComponentOrReplace(transform70)
 lotteryScene.addComponentOrReplace(new GLTFShape("models/lottery.glb"))
 engine.addEntity(lotteryScene)
 
-
-
-const santaD = new Entity()
-santaD.addComponentOrReplace(new GLTFShape("models/santaDancing.glb"))
-const transformSantaD = new Transform({
-  position: new Vector3(4.5, 0.05, 4),
-  rotation: Quaternion.Euler(0,90,0),
-  scale: new Vector3(10, 12, 10)
+const santa = new LotteryNPC({
+    position: new Vector3(4.5, 0.05, 4),
+    rotation: Quaternion.Euler(0,90,0),
+    scale: new Vector3(10, 12, 10)
 })
-santaD.addComponentOrReplace(transformSantaD)
-engine.addEntity(santaD)
-
-
-const santaW = new Entity()
-santaW.addComponentOrReplace(new GLTFShape("models/santaWaiting.glb"))
-const transformSantaW = new Transform({
-  position: new Vector3(4.5, 0.05, 6),
-  rotation: Quaternion.Euler(0,90,0),
-  scale: new Vector3(10, 12, 10)
-})
-santaW.addComponentOrReplace(transformSantaW)
-engine.addEntity(santaW)
+engine.addEntity(santa)
 
 const maticNpc = new MaticNPC({
     position: new Vector3(10.5, 1.5, 6),
@@ -137,13 +122,13 @@ let playerSpawn = new PlayerSpawn();
 const gameController = new LevelController(new class implements IGameEvents {
     onEnd(level: number, score: number) {
         snowball.drop()
-        npc.show()
+        snowmanNPC.show()
         playerSpawn.release()
     }
 
     onExit() {
         snowball.drop()
-        npc.show()
+        snowmanNPC.show()
         playerSpawn.release()
     }
 
@@ -158,7 +143,7 @@ const gameController = new LevelController(new class implements IGameEvents {
     }
 
     onStart() {
-        npc.hide()
+        snowmanNPC.hide()
         playerSpawn.spawn()
     }
 })

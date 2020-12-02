@@ -18,7 +18,8 @@ export class NPCBase extends NPC {
             {
                 faceUser: true,
                 reactDistance: 3,
-                continueOnWalkAway: true
+                continueOnWalkAway: true,
+                onlyClickTrigger: true
             })
     }
 
