@@ -1,8 +1,8 @@
-import { NPC } from '../node_modules/@dcl/npc-utils/index'
 import { Dialog } from '../node_modules/@dcl/npc-utils/utils/types'
+import {NPCBase} from "./npcBase";
 
-export class SnowmanNPC extends NPC {
-    ILoveCats: Dialog[] = [
+export class SnowmanNPC extends NPCBase {
+    snowmanDlg: Dialog[] = [
         //for debug fast start
         {
             name: '4_1_start_game',
@@ -111,72 +111,8 @@ export class SnowmanNPC extends NPC {
     constructor(position: TranformConstructorArgs, takeHandler) {
         super(
             position,
-            'models/snowman.glb',
-            () => {
-                this.onActivateHandler()
-            },
-            {
-                faceUser: true,
-                reactDistance: 3,
-                continueOnWalkAway: true
-            })
-
+            'models/snowman.glb')
+        this.dlgScript = this.snowmanDlg
         this.takeHandler = takeHandler
-    }
-
-    hide() {
-        if (this.active) {
-            this.endInteraction()
-            engine.removeEntity(this)
-            this.active = false
-        }
-    }
-
-    onActivateHandler() {
-        this.talk(this.ILoveCats, this.state)
-    }
-
-    showError(error) {
-        this.ILoveCats.filter(b => b.name == 'error')[0].text = 'Opps, some error: ' + error
-        this.talk(this.ILoveCats, 'error')
-    }
-
-    show() {
-        if (!this.active) {
-            engine.addEntity(this)
-            this.active = true
-        }
-    }
-
-    onTextSubmit(text:string) {
-        log(text)
-    }
-
-    showInputText() {
-        this.fillInCanvas = new UIInputText(this.dialog.container)
-        this.fillInCanvas.height = 60
-        this.fillInCanvas.width = 400
-        this.fillInCanvas.hTextAlign = 'center'
-        this.fillInCanvas.vTextAlign = 'center'
-        this.fillInCanvas.fontSize = 15
-        this.fillInCanvas.color = Color4.Gray()
-        this.fillInCanvas.onTextSubmit = new OnTextSubmit(() => {
-            this.fillInCanvas.visible = false
-            this.endInteraction()
-            this.onTextSubmit(this.submittedText)
-        })
-
-        this.fillInCanvas.onChanged = new OnChanged((x) => {
-            this.submittedText = x.value
-        })
-    }
-
-    private hideInputText() {
-        this.fillInCanvas.visible = false
-    }
-
-    private textSubmit() {
-        this.hideInputText()
-        this.onTextSubmit(this.submittedText)
     }
 }

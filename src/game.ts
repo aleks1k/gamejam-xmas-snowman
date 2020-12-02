@@ -4,6 +4,7 @@ import {SnowmanNPC} from "./npc";
 import {AnimationPicture} from "./animationPicture";
 import {LevelController} from "./levelController";
 import {PlayerSpawn} from "./playerSpawn";
+import {MaticNPC} from "./maticNPC";
 
 engine.addEntity(static_scene)
 
@@ -124,16 +125,12 @@ const transformSantaW = new Transform({
 santaW.addComponentOrReplace(transformSantaW)
 engine.addEntity(santaW)
 
-
-const robot = new Entity()
-robot.addComponentOrReplace(new GLTFShape("models/robot.glb"))
-const transformRobot = new Transform({
-  position: new Vector3(10.5, 1.5, 6),
-  rotation: Quaternion.Euler(0,-180,0),
-  scale: new Vector3(1, 1, 1)
+const maticNpc = new MaticNPC({
+    position: new Vector3(10.5, 1.5, 6),
+    rotation: Quaternion.Euler(0,-180,0),
+    scale: new Vector3(1, 1, 1)
 })
-robot.addComponentOrReplace(transformRobot)
-engine.addEntity(robot)
+engine.addEntity(maticNpc)
 
 let playerSpawn = new PlayerSpawn();
 
