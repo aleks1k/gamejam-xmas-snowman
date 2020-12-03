@@ -7,16 +7,33 @@ import {PlayerSpawn} from "./playerSpawn";
 import {MaticNPC} from "./maticNPC";
 import {LotteryNPC} from "./lotteryNPC";
 import {LotteryUI} from "./lotteryUI";
+import {getCurrentRealm} from "@decentraland/EnvironmentAPI";
+import {BuilderHUD} from "./builderHUD/BuilderHUD";
+import {LotteryStand} from "./lotteryStand";
 
 engine.addEntity(static_scene)
 
-class RotatorSystem {
-  update(dt: number) {
-  }
-}
+getCurrentRealm().then(realm => {
+    if (realm.displayName == 'localhost-stub') {
+        const hud = new BuilderHUD()
+        const hudAttathEntities = [
+            'prizeCounter',
+        ]
 
-// Add a new instance of the system to the engine
-engine.addSystem(new RotatorSystem())
+        for (const e in engine.entities) {
+            // log(e)
+            const entity = engine.entities[e];
+            if (entity instanceof Entity && entity.name != null) {
+                log(entity.name)
+                if (hudAttathEntities.indexOf(entity.name) > -1) {
+                    log('attach To Entity', entity.name)
+                    hud.attachToEntity(entity)
+                }
+            }
+        }
+    }
+})
+
 
 const snowball = new Snowball(() => {
     gameController.startGame()
@@ -97,16 +114,11 @@ egg2.addComponent(
 )
 engine.addEntity(egg2)
 
-
-const lotteryScene = new Entity()
-const transform70 = new Transform({
+const lotteryScene = new LotteryStand({
   position: new Vector3(7.5, 0, 4.5),
   rotation: new Quaternion(0, 0, 0, 1),
   scale: new Vector3(1, 1, 1)
 })
-lotteryScene.addComponentOrReplace(transform70)
-lotteryScene.addComponentOrReplace(new GLTFShape("models/lottery.glb"))
-engine.addEntity(lotteryScene)
 
 const santa = new LotteryNPC({
     position: new Vector3(4.5, 0.05, 4),
