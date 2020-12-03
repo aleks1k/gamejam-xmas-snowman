@@ -18,8 +18,23 @@ export class LotteryUI {
     private task_count = 4;
     private ticket_count: UICounter;
     private uiShapes:UIShape[] = []
+    private taskBtn: UIImage;
 
     constructor() {
+        this.taskBtn = new UIImage(this.canvas, new Texture("textures/ui_full.png"))
+        this.taskBtn.width = "160"
+        this.taskBtn.height = "40"
+        this.taskBtn.sourceWidth = 220
+        this.taskBtn.sourceHeight = 55
+        this.taskBtn.positionY = 10
+        this.taskBtn.positionX = -150
+        this.taskBtn.vAlign = "bottom"
+        this.taskBtn.hAlign = "center"
+        this.taskBtn.visible = false
+        this.taskBtn.onClick = new OnClick(() => {
+            this.show()
+        })
+
         this.window = new UIImage(this.canvas, new Texture("textures/ui_full.png"))
         this.window.width = "445"
         this.window.height = "250"
@@ -67,6 +82,8 @@ export class LotteryUI {
             this.addTask(i, task_state[i], this.task_count, this.task_img_height)
         }
 
+        this.hide()
+
         this.updateTask(99, [
             TaskState.completed,
             TaskState.active,
@@ -96,8 +113,10 @@ export class LotteryUI {
 
     private hide() {
         this.uiShapes.forEach(s => s.visible = false)
+        this.taskBtn.visible = true
     }
     private show() {
         this.uiShapes.forEach(s => s.visible = true)
+        this.taskBtn.visible = false
     }
 }

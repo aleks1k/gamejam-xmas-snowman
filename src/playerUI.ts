@@ -33,13 +33,14 @@ export class PlayerUI {
     }
 
     private initMenu() {
-        this.endGameBtn = new UIImage(this.canvas, new Texture("textures/uiClose.png"))
+        this.endGameBtn = new UIImage(this.canvas, new Texture("textures/ui_full.png"))
         this.endGameBtn.width = "160"
         this.endGameBtn.height = "40"
         this.endGameBtn.sourceWidth = 220
-        this.endGameBtn.sourceHeight = 51
+        this.endGameBtn.sourceHeight = 55
+        this.endGameBtn.sourceTop = 55
         this.endGameBtn.positionY = 10
-        this.endGameBtn.positionX = 0
+        this.endGameBtn.positionX = 150
         this.endGameBtn.vAlign = "bottom"
         this.endGameBtn.hAlign = "center"
         this.endGameBtn.visible = false
