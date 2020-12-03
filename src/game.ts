@@ -119,6 +119,8 @@ const lotteryScene = new LotteryStand({
   rotation: new Quaternion(0, 0, 0, 1),
   scale: new Vector3(1, 1, 1)
 })
+lotteryScene.setParent(static_scene)
+lotteryScene.updateInfo(500000, 10000000, 1000, 200)
 
 const santa = new LotteryNPC({
     position: new Vector3(4.5, 0.05, 4),
