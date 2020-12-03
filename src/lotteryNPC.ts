@@ -1,7 +1,9 @@
 import { Dialog } from '../node_modules/@dcl/npc-utils/utils/types'
 import {NPCBase} from "./npcBase";
+import {matic} from '../node_modules/@dcl/l2-utils/index'
 
 export class LotteryNPC extends NPCBase {
+    ticketPrice = 10
     santaDlg: Dialog[] = [
         {
             name: 'start',
@@ -15,11 +17,14 @@ export class LotteryNPC extends NPCBase {
         },
         {
             name: 'buy_tickets',
-            text: 'Lottery ticket price is 10 MANA, accepting only Matic transactions. Do you want buy tickets?',
+            text: 'Lottery ticket price is '+this.ticketPrice+' MANA, accepting only Matic transactions. Do you want buy tickets?',
             isQuestion: true,
             buttons: [
-                {label: `Yes`, goToDialog: 'amount_tickets'},
-                {label: `No`, goToDialog: 'no_matic_mana'},
+                {label: `Yes`, goToDialog: 'check_balance',
+                    triggeredActions: () => {
+                       this.checkMaticBalance()
+                    }},
+                {label: `No`, goToDialog: 'end'},
                 {
                     label: `View terms`, goToDialog: 'buy_tickets',
                     triggeredActions: () => {
@@ -29,35 +34,49 @@ export class LotteryNPC extends NPCBase {
             ]
         },
         {
+            name: 'check_balance',
+            text: 'Wait seconds, I check your matic balance.',
+            isEndOfDialog: true
+        },
+        {
             name: 'no_matic_mana',
-            text: 'You need to top up Matic Balance. Find the Robot (Matic Bot), he will help you to top up your balance.',
+            text: 'You need to top up Matic Balance. Talk with Matic Bot, he will help you to top up your balance.',
             isEndOfDialog: true
         },
         {
             name: 'amount_tickets',
-            text: 'How many tickets do you want buy?!',
+            text: 'How many tickets do you want?!',
             isQuestion: true,
             buttons: [
-                {label: `1`, goToDialog: 'approve_transfer'},
-                {label: `5`, goToDialog: 'approve_transfer'},
-                {label: `25`, goToDialog: 'approve_transfer'},
-                {label: `100`, goToDialog: 'approve_transfer'},
+                {label: `5 - `+this.ticketPrice*5+' MANA', goToDialog: 'approve_transfer',
+                    triggeredActions: () => {
+                        this.buyTickets(5)
+                    }},
+                {label: `1 - `+this.ticketPrice+' MANA', goToDialog: 'approve_transfer',
+                    triggeredActions: () => {
+                        this.buyTickets(1)
+                    }},
+                {label: `25 - `+this.ticketPrice*25+' MANA', goToDialog: 'approve_transfer',
+                    triggeredActions: () => {
+                        this.buyTickets(25)
+                    }},
+                {label: `100 - `+this.ticketPrice*100+' MANA', goToDialog: 'approve_transfer',
+                    triggeredActions: () => {
+                        this.buyTickets(100)
+                    }},
             ]
         },
         {
             name: 'approve_transfer',
-            text: 'Cost 10 MANA, sign Metamask for approve transfer',
-            isQuestion: true,
-            buttons: [
-                {label: `Yes`, goToDialog: 'complete',                    triggeredActions: () => {
-                        this.startDance()
-                    }},
-                {label: `No`, goToDialog: 'end'},
-            ]
+            text: 'Sign in Metamask for approve transfer',
+            isEndOfDialog: true,
         },
         {
             name: 'complete',
-            text: `Thank you!`,
+            text: `Thank you! Good Luck! Lottery results will be on 25 of Dec!`,
+            triggeredByNext: () => {
+                this.startDance()
+            },
             isEndOfDialog: true,
         },
         {
@@ -76,15 +95,51 @@ export class LotteryNPC extends NPCBase {
     active = true
     state : number | string = 0
     dancingShape = new GLTFShape("models/santaDancing.glb")
+    network: string = 'mainnet'
+    ticketWallet = '0x69d494eAdE06850B5074b502faA3666EC19f0787'
 
     constructor(position: TranformConstructorArgs) {
         super(
             position,
             'models/santaWaiting.glb')
         this.dlgScript = this.santaDlg
+
+        //for debug
+        this.network = 'goerli'
     }
 
     private startDance() {
         this.addComponentOrReplace(this.dancingShape)
+    }
+
+    buyTickets(count) {
+        executeTask(async () => {
+            const amount = this.ticketPrice * count
+            const res = await matic.sendMana(this.ticketWallet, amount, true, this.network).then((res) =>
+            {
+                log(res)
+                this.talk(this.dlgScript, 'complete')
+            }).catch((e) =>
+            {
+                this.showError(e.toString())
+            })
+            log(res)
+        })
+    }
+    private checkMaticBalance() {
+        executeTask(async () => {
+            await matic.balance(null, this.network).then((balance) =>
+            {
+                log(balance)
+                if (balance.l2 < 10) {
+                    this.talk(this.dlgScript, 'no_matic_mana')
+                } else {
+                    this.talk(this.dlgScript, 'amount_tickets')
+                }
+            }).catch((e) =>
+            {
+                this.showError(e.toString())
+            })
+        })
     }
 }
