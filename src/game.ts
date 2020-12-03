@@ -12,20 +12,19 @@ import {BuilderHUD} from "./builderHUD/BuilderHUD";
 import {LotteryStand} from "./lotteryStand";
 
 engine.addEntity(static_scene)
-
 getCurrentRealm().then(realm => {
     if (realm.displayName == 'localhost-stub') {
         const hud = new BuilderHUD()
-        const hudAttathEntities = [
-            'prizeCounter',
+        const hudAttachEntities = [
+            // 'LotteryStand','snowmanNPC'
+            // 'MaticNPC','LotteryNPC'
         ]
 
         for (const e in engine.entities) {
-            // log(e)
             const entity = engine.entities[e];
             if (entity instanceof Entity && entity.name != null) {
-                log(entity.name)
-                if (hudAttathEntities.indexOf(entity.name) > -1) {
+                // log(entity.name)
+                if (hudAttachEntities.indexOf(entity.name) > -1) {
                     log('attach To Entity', entity.name)
                     hud.attachToEntity(entity)
                 }
@@ -54,12 +53,13 @@ let lotteryUI = new LotteryUI()
 
 
 const snowmanNPC = new SnowmanNPC({
-  position: new Vector3(23.5, 0, 4),
+  position: new Vector3(25.5,0,3.5),
   rotation: Quaternion.Euler(0, -90, 0),
   scale: new Vector3(2.5000030994415283, 2.5, 2.5000030994415283)
 }, () => {
   snowball.take()
 })
+snowmanNPC.name = 'snowmanNPC'
 
 const snowmanEyes = new AnimationPicture("textures/eyesSprites.png", 14, 2,{
     position: new Vector3(-0.03, 0.68, 0.1),
@@ -115,7 +115,7 @@ egg2.addComponent(
 engine.addEntity(egg2)
 
 const lotteryScene = new LotteryStand({
-  position: new Vector3(7.5, 0, 4.5),
+  position: new Vector3(5.6, 0, 4.1),
   rotation: new Quaternion(0, 0, 0, 1),
   scale: new Vector3(1, 1, 1)
 })
@@ -123,18 +123,20 @@ lotteryScene.setParent(static_scene)
 lotteryScene.updateInfo(500000, 10000000, 1000, 200)
 
 const santa = new LotteryNPC({
-    position: new Vector3(4.9, 0.05, 7.4),
+    position: new Vector3(-2.3,0.05,2.7),
     rotation: Quaternion.Euler(0,120,0),
     scale: new Vector3(10, 12, 10)
 })
-engine.addEntity(santa)
+santa.setParent(lotteryScene)
+santa.name = 'LotteryNPC'
 
 const maticNpc = new MaticNPC({
-    position: new Vector3(5.5, 1.5, 2),
+    position: new Vector3(-2.1,1.5,-2.1),
     rotation: Quaternion.Euler(0,30,0),
     scale: new Vector3(1, 1, 1)
 })
-engine.addEntity(maticNpc)
+maticNpc.setParent(lotteryScene)
+maticNpc.name = 'MaticNPC'
 
 let playerSpawn = new PlayerSpawn();
 
