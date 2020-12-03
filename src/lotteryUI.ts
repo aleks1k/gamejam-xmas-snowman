@@ -1,17 +1,25 @@
 import * as ui from '../node_modules/@dcl/ui-utils/index'
 
+enum TaskState {
+    active,
+    completed,
+    inactive,
+}
+
 export class LotteryUI {
     private window: UIImage
     private closeIcon: UIImage
     private canvas: UICanvas
-    private tasksActive: ui.LargeIcon
-    private tasksInactive: ui.LargeIcon
-    private tasksCompleated: ui.LargeIcon
+    private tasks: ui.LargeIcon[] = []
     private bottomSpace = 150
-    
+    private vAlign: string = "bottom";
+    private hAlign: string = "left";
+    private task_img_height = 30;
+    private task_count = 4;
+    private ticket_count: UICounter;
+    private uiShapes:UIShape[] = []
+
     constructor() {
-
-
         this.window = new UIImage(this.canvas, new Texture("textures/ui_full.png"))
         this.window.width = "445"
         this.window.height = "250"
@@ -24,6 +32,7 @@ export class LotteryUI {
         this.window.vAlign = "bottom"
         this.window.hAlign = "left"
         this.window.visible = true
+        this.uiShapes.push(this.window)
 
         this.closeIcon = new UIImage(this.canvas, new Texture("textures/ui_full.png"))
         this.closeIcon.width = "45"
@@ -37,38 +46,58 @@ export class LotteryUI {
         this.closeIcon.vAlign = "bottom"
         this.closeIcon.hAlign = "left"
         this.closeIcon.visible = true
+        this.closeIcon.onClick =  new OnClick(() => {
+            this.hide()
+        })
+        this.uiShapes.push(this.closeIcon)
 
-        this.tasksActive = new ui.LargeIcon('textures/tasks_active.png', 0, 0, 365, 30*4)
-        this.tasksActive.image.vAlign = "bottom"
-        this.tasksActive.image.hAlign = "left"
-        this.tasksActive.image.positionY = this.bottomSpace+20
-        this.tasksActive.image.positionX = 45
-        this.tasksActive.image.visible = false
+        this.ticket_count = new ui.UICounter(0, 200, 336, Color4.Red(), 25)
+        this.ticket_count.uiText.vAlign = this.vAlign
+        this.ticket_count.uiText.hAlign = this.hAlign
+        this.uiShapes.push(this.ticket_count.uiText)
 
-        this.tasksInactive = new ui.LargeIcon('textures/tasks_inactive.png', 0, 0, 365, 30*4)
-        this.tasksInactive.image.vAlign = "bottom"
-        this.tasksInactive.image.hAlign = "left"
-        this.tasksInactive.image.positionY = this.bottomSpace+20
-        this.tasksInactive.image.positionX = 45
-        this.tasksInactive.image.visible = false
 
-        this.tasksCompleated = new ui.LargeIcon('textures/tasks_completed.png', 0, 0, 365, 30*4)
-        this.tasksCompleated.image.vAlign = "bottom"
-        this.tasksCompleated.image.hAlign = "left"
-        this.tasksCompleated.image.positionY = this.bottomSpace+20
-        this.tasksCompleated.image.positionX = 45
-        this.tasksCompleated.image.visible = true
+        const task_state = [
+            TaskState.inactive,
+            TaskState.inactive,
+            TaskState.inactive,
+            TaskState.inactive,
+        ]
+        for (let i=0; i<task_state.length; i++) {
+            this.addTask(i, task_state[i], this.task_count, this.task_img_height)
+        }
+
+        this.updateTask(99, [
+            TaskState.completed,
+            TaskState.active,
+            TaskState.active,
+            TaskState.inactive,
+        ])
     }
 
-    
-    /*setPresentCount(count) {
-        this.presentsCounter.image.sourceLeft = 128 * (5 - count)
-        this.presentsCounter.image.positionX = 128 * (5 - count)
+    addTask(index:number, state:TaskState, task_count:number, task_img_height=30) {
+        const task = new ui.LargeIcon('textures/tasks.png', 45, this.bottomSpace+(task_count-index)*task_img_height, 365, task_img_height)
+        task.image.vAlign = this.vAlign
+        task.image.hAlign = this.hAlign
+        task.image.sourceTop = state*task_img_height*task_count + index*task_img_height
+        log(task.image.sourceTop)
+
+        this.tasks.push(task)
+        this.uiShapes.push(task.image)
+
     }
 
-    visible(val: boolean) {
-        this.level.uiText.visible = this.score.uiText.visible =
-            this.levelLabel.uiText.visible = this.scoreLabel.uiText.visible =
-            this.presentsCounter.image.visible = val
-    }*/
+    updateTask(tikets_count, state:TaskState[]) {
+        this.ticket_count.set(tikets_count)
+        for (let i=0; i<state.length; i++) {
+            this.tasks[i].image.sourceTop = state[i]*this.task_img_height*this.task_count + i*this.task_img_height
+        }
+    }
+
+    private hide() {
+        this.uiShapes.forEach(s => s.visible = false)
+    }
+    private show() {
+        this.uiShapes.forEach(s => s.visible = true)
+    }
 }
