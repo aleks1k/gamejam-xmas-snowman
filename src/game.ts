@@ -6,6 +6,7 @@ import {LevelController} from "./levelController";
 import {PlayerSpawn} from "./playerSpawn";
 import {MaticNPC} from "./maticNPC";
 import {LotteryNPC} from "./lotteryNPC";
+import {LotteryUI} from "./lotteryUI";
 
 engine.addEntity(static_scene)
 
@@ -30,6 +31,10 @@ const input = Input.instance
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, false, (e) => {
   snowball.fire()
 })
+
+let lotteryUI = new LotteryUI()
+
+
 
 const snowmanNPC = new SnowmanNPC({
   position: new Vector3(23.5, 0, 4),
