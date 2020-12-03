@@ -21,13 +21,13 @@ export class LotteryStand extends Entity {
             rotation: Quaternion.Euler(0, -90, 0),
             scale: new Vector3(1, 1, 1)
         })
-        this.ticketsCounter = this.createCounter(2.4, Color3.White(),
+        this.usersCounter = this.createCounter(2.4, Color3.White(),
             {
             position: new Vector3(-3.07,2.92,1.97),
             rotation: Quaternion.Euler(0, -90, 0),
             scale: new Vector3(1, 1, 1)
         })
-        this.usersCounter = this.createCounter(2.4, Color3.White(),
+        this.ticketsCounter = this.createCounter(2.4, Color3.White(),
             {
             position: new Vector3(-3.07,2.92,-0.64),
             rotation: Quaternion.Euler(0, -90, 0),
