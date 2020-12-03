@@ -17,7 +17,8 @@ getCurrentRealm().then(realm => {
         const hud = new BuilderHUD()
         const hudAttachEntities = [
             // 'LotteryStand','snowmanNPC'
-            // 'MaticNPC','LotteryNPC'
+            // 'MaticNPC','LotteryNPC',
+            // 'stealPresent'
         ]
 
         for (const e in engine.entities) {
@@ -60,6 +61,14 @@ const snowmanNPC = new SnowmanNPC({
   snowball.take()
 })
 snowmanNPC.name = 'snowmanNPC'
+// const presentShape = new GLTFShape("models/static/present.glb")
+// const present = new Entity('stealPresent')
+// present.addComponent(presentShape)
+// present.addComponent(new Transform({
+//     position: new Vector3(0, 0.5, 0.2),
+//     scale: new Vector3(1, 1, 1)
+// }))
+// present.setParent(snowmanNPC)
 
 const snowmanEyes = new AnimationPicture("textures/eyesSprites.png", 14, 2,{
     position: new Vector3(-0.03, 0.68, 0.1),

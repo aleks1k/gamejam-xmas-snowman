@@ -146,7 +146,7 @@ export class Enemy extends Entity {
                         this.present = new Entity('stealPresent')
                         this.present.addComponent(this.presentShape)
                         this.present.addComponent(new Transform({
-                            position: new Vector3(0, 2, 0),
+                            position: new Vector3(-0.29, 0.26, 0.19),
                             scale: new Vector3(1, 1, 1)
                         }))
                         this.present.setParent(this)

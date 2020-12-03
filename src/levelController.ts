@@ -115,7 +115,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         // this.ui.health.set(1)
         this.ui.setPresentCount(this.stealMax)
         this.ui.score.set(0)
-        this.level = 0
+        this.level = 5
         this.ui.level.set(this.level)
         this.factory.reset()
         this.state = GameState.Strarted
