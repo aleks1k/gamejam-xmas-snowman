@@ -2,8 +2,8 @@ import * as ui from '../node_modules/@dcl/ui-utils/index'
 
 enum TaskState {
     active,
-    completed,
     inactive,
+    completed,
 }
 
 export class LotteryUI {
