@@ -123,15 +123,15 @@ lotteryScene.setParent(static_scene)
 lotteryScene.updateInfo(500000, 10000000, 1000, 200)
 
 const santa = new LotteryNPC({
-    position: new Vector3(4.5, 0.05, 4),
-    rotation: Quaternion.Euler(0,90,0),
+    position: new Vector3(4.9, 0.05, 7.4),
+    rotation: Quaternion.Euler(0,120,0),
     scale: new Vector3(10, 12, 10)
 })
 engine.addEntity(santa)
 
 const maticNpc = new MaticNPC({
-    position: new Vector3(10.5, 1.5, 6),
-    rotation: Quaternion.Euler(0,-180,0),
+    position: new Vector3(5.5, 1.5, 2),
+    rotation: Quaternion.Euler(0,30,0),
     scale: new Vector3(1, 1, 1)
 })
 engine.addEntity(maticNpc)
