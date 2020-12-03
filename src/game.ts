@@ -10,6 +10,7 @@ import {LotteryUI} from "./lotteryUI";
 import {getCurrentRealm} from "@decentraland/EnvironmentAPI";
 import {BuilderHUD} from "./builderHUD/BuilderHUD";
 import {LotteryStand} from "./lotteryStand";
+import {movePlayerTo} from "@decentraland/RestrictedActions";
 
 engine.addEntity(static_scene)
 getCurrentRealm().then(realm => {
@@ -100,6 +101,16 @@ egg1.addComponent(
   )
 )
 engine.addEntity(egg1)
+
+class EggSystem implements ISystem {
+    update(dt: number) {
+        const u = Camera.instance.position
+        if ( u.x < 23 && u.x > 22 && u.y < 2 && u.y > 0 && u.z < 26 && u.z > 25) {
+            movePlayerTo({x: 12.9, y: 2, z: 30.5})
+        }
+    }
+}
+engine.addSystem(new EggSystem())
 
 const egg2 = new Entity()
 egg2.addComponentOrReplace(eggShape)
