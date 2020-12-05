@@ -106,7 +106,8 @@ export class Enemy extends Entity {
 
     private die(showExplosion) {
         this.rayTrigger.setParent(null)
-        let clip = new AudioClip("sfx/sfxFight.mp3")
+        let rnd = Enemy.getRandomInt(1,4)
+        let clip = new AudioClip("sfx/snowballDie"+ rnd +".mp3")
         let source = new AudioSource(clip)
         source.playing = true
         source.loop = false
