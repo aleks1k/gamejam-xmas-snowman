@@ -111,8 +111,13 @@ export class SnowmanNPC extends NPCBase {
     constructor(position: TranformConstructorArgs, takeHandler) {
         super(
             position,
-            'models/snowman.glb')
+            'models/snowman.glb', 'sfx/snowwalk.mp3')
         this.dlgScript = this.snowmanDlg
         this.takeHandler = takeHandler
+    }
+
+    onActivateHandler() {
+        super.onActivateHandler()
+        // --
     }
 }

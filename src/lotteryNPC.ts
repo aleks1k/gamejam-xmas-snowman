@@ -101,7 +101,7 @@ export class LotteryNPC extends NPCBase {
     constructor(position: TranformConstructorArgs) {
         super(
             position,
-            'models/santaWaiting.glb')
+            'models/santaWaiting.glb', 'sfx/hohoho.mp3')
         this.dlgScript = this.santaDlg
 
         //for debug

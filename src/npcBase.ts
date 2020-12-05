@@ -8,7 +8,7 @@ export class NPCBase extends NPC {
     active = true
     state : number | string = 0
 
-    constructor(position: TranformConstructorArgs, model: string) {
+    constructor(position: TranformConstructorArgs, model: string, dialogSound=null) {
         super(
             position,
             model,
@@ -19,7 +19,8 @@ export class NPCBase extends NPC {
                 faceUser: true,
                 reactDistance: 3,
                 continueOnWalkAway: true,
-                onlyClickTrigger: true
+                onlyClickTrigger: true,
+                dialogSound: dialogSound
             })
     }
 
