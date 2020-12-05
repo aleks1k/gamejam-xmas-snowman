@@ -62,4 +62,7 @@ export class Weapon extends Entity {
         // this.state.stop()
         // this.state.play()
     }
+    isReload() {
+        return false
+    }
 }

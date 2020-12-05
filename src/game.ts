@@ -37,7 +37,7 @@ getCurrentRealm().then(realm => {
 
 
 const snowball = new Snowball(() => {
-    gameController.startGame()
+    gameController.startGame(snowball)
 })
 snowball.setParent(static_scene)
 engine.addSystem(snowball)

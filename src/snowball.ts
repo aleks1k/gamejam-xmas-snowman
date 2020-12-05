@@ -9,7 +9,7 @@ export class Snowball extends Weapon implements ISystem {
     private takeHandler
     private fireParent: IEntity;
     private fireBase: Entity;
-    private shootTime = 0.3
+    private shootTime = 0.5
     private sfxClip
     private sfxSource
     private ballPath = [
@@ -110,5 +110,9 @@ export class Snowball extends Weapon implements ISystem {
             // this.getComponent(Transform).scale.x = 1
             this.dt = 0
         }
+    }
+
+    isReload() {
+        return this.isFly
     }
 }

@@ -2,6 +2,7 @@ import {EnemyFactory} from "./enemyFactory"
 import {ISceneUIEvent, PlayerUI} from "./playerUI"
 import {GameUI} from "./gameUI";
 import {IEnemyEvent, Enemy} from "./enemy";
+import {Weapon} from "./weapon";
 
 const camera = Camera.instance
 
@@ -25,6 +26,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     snowmanSpawnPoint = new Vector3(23, 0, 25)
     presentsTargetPoint = new Vector3(5.5, 0, 22)
     private stealMax: number = 5;
+    private weapon: Weapon;
 
     constructor(eventHandler: IGameEvents) {
         this.eventHandler = eventHandler
@@ -43,7 +45,8 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     }
 
     onHit(p: Enemy, pos: any) {
-        if (this.isStarted()) {
+        if (this.isStarted() && !this.weapon.isReload()) {
+            p.die(true)
             this.ui.score.increase(this.addScore)
             this.factory.enemyDying(p, pos)
         }
@@ -107,7 +110,8 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
     }
 
-    public startGame() {
+    public startGame(weapon:Weapon) {
+        this.weapon = weapon
         this.restart()
     }
 
