@@ -7,6 +7,7 @@ export class NPCBase extends NPC {
     submittedText: string = ''
     active = true
     state : number | string = 0
+    private soundEnt: Entity;
 
     constructor(position: TranformConstructorArgs, model: string, dialogSound=null) {
         super(
@@ -20,8 +21,18 @@ export class NPCBase extends NPC {
                 reactDistance: 3,
                 continueOnWalkAway: true,
                 onlyClickTrigger: true,
-                dialogSound: dialogSound
+                // dialogSound: dialogSound
             })
+
+        this.soundEnt = new Entity()
+
+        if (dialogSound) {
+            this.soundEnt.addComponent(new Transform())
+            this.soundEnt.addComponent(new AudioSource(new AudioClip(dialogSound)))
+            this.soundEnt.getComponent(AudioSource).volume = 0.5
+            engine.addEntity(this.soundEnt)
+            this.soundEnt.setParent(Attachable.AVATAR)
+        }
     }
 
     hide() {
@@ -33,6 +44,9 @@ export class NPCBase extends NPC {
     }
 
     onActivateHandler() {
+        if (this.soundEnt.hasComponent(AudioSource)) {
+            this.soundEnt.getComponent(AudioSource).playOnce()
+        }
         this.talk(this.dlgScript, this.state)
     }
 
