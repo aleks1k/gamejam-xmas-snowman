@@ -10,6 +10,8 @@ export class Snowball extends Weapon implements ISystem {
     private fireParent: IEntity;
     private fireBase: Entity;
     private shootTime = 0.3
+    private sfxClip
+    private sfxSource
     private ballPath = [
         new Vector3(0, 0, 0),
         new Vector3(4, 1, 0),
@@ -49,6 +51,9 @@ export class Snowball extends Weapon implements ISystem {
         // this.initSnowball()
 
         // engine.addSystem(this)
+        this.sfxClip = new AudioClip("sfx/snowballFire1.mp3")
+        this.sfxSource = new AudioSource(this.sfxClip)
+        this.addComponent(this.sfxSource)
     }
 
     initSnowball() {
@@ -86,6 +91,8 @@ export class Snowball extends Weapon implements ISystem {
         this.fireBase.getComponent(Transform).rotation = camera.rotation.multiply(Quaternion.Euler(0, 270, 0))
         this.addComponent(new utils.FollowPathComponent(this.ballPath, this.shootTime))
         this.isFly = true
+        this.sfxSource.playOnce()
+        this.sfxSource.volume = 1
     }
 
     update(dt: number) {
