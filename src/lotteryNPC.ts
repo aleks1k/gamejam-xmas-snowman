@@ -10,10 +10,10 @@ export class LotteryNPC extends NPCBase {
             text: 'Ho-ho-ho. Merry Christmas!'
         },
         {
-            text: 'I\'m here to do marvelous things. You can win a big prize for Christmas in my lottery.'
+            text: "I'm here to spread the festive cheer. You can win big prizes for Christmas in my lottery!"
         },
         {
-            text: 'The lottery is designed so that all the money from the ticket sale goes to the prize pool.'
+            text: 'The lottery is designed so that all the money from ticket sales go into the prize pool.'
         },
         {
             name: 'buy_tickets',
@@ -40,7 +40,7 @@ export class LotteryNPC extends NPCBase {
         },
         {
             name: 'no_matic_mana',
-            text: 'You need to top up Matic Balance. Talk with Matic Bot, he will help you to top up your balance.',
+            text: 'You need to top up your Matic MANA Balance. Find the Robot (Matic Bot), he will help you to top up your balance.',
             isEndOfDialog: true
         },
         {

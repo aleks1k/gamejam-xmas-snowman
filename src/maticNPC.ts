@@ -10,7 +10,7 @@ export class MaticNPC extends NPCBase {
         },
         {
             name: '1_1_start',
-            text: 'Matic Network brings massive scale to Ethereum using an adapted version of Plasma with PoS based side chains. High throughput and free transactions.',
+            text: 'Matic Network is a Layer 2 scaling solution for Ethereum using an adapted version of Plasma with PoS based side chains, achieving high throughput and free transactions.',
             triggeredByNext: () => {
                 const balance = this.getMaticBalance()
             },
@@ -46,10 +46,11 @@ export class MaticNPC extends NPCBase {
         },
         {
             name: 'top_up_intro',
-            text: `I can help to top up your Matic balance.`,
+            text: `I can help you top up your Matic MANA balance.`,
         },
         {
-            text: `At any time you can withdraw money back or spend it on Lottery here, or Casino in DCL, or QuizZone, or Wearables (in the future), etc.`,
+            text: `At any time you can deposit or withdraw Matic MANA by speaking to me.
+            Allowing you to spend your mana on a variety of things including: Xmas Lottery, Casinos within DCL, QuizZone and more including wearables in the future`,
         },
         {
             name: 'top_up_start',
