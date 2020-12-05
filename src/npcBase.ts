@@ -9,7 +9,7 @@ export class NPCBase extends NPC {
     state : number | string = 0
     private soundEnt: Entity;
 
-    constructor(position: TranformConstructorArgs, model: string, dialogSound=null) {
+    constructor(position: TranformConstructorArgs, model: string, dialogSound=null, idleAnim=null) {
         super(
             position,
             model,
@@ -21,6 +21,7 @@ export class NPCBase extends NPC {
                 reactDistance: 3,
                 continueOnWalkAway: true,
                 onlyClickTrigger: true,
+                idleAnim: idleAnim,
                 // dialogSound: dialogSound
             })
 

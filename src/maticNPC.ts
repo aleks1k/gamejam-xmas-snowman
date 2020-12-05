@@ -120,7 +120,7 @@ export class MaticNPC extends NPCBase {
     constructor(position: TranformConstructorArgs) {
         super(
             position,
-            "models/robot.glb", 'sfx/robot.mp3')
+            "models/robot.glb", 'sfx/robot.mp3', 'Talk')
         this.dlgScript = this.maticDlg
 
         //for debug
