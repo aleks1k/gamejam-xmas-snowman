@@ -1,7 +1,7 @@
 import utils from "../node_modules/decentraland-ecs-utils/index"
 
-import {PathData} from "./pathDataComponent"
-import {PatrolPath} from "./patrolPath"
+import { PathData } from "./pathDataComponent"
+import { PatrolPath } from "./patrolPath"
 
 const invisibleSphere = new SphereShape()
 invisibleSphere.visible = false
@@ -21,14 +21,14 @@ export class Enemy extends Entity {
     public attack = 0.1
     public isExployed = false
     private PatrolPath: PatrolPath
-    private handler:IEnemyEvent
+    private handler: IEnemyEvent
     private rayTrigger: Entity;
     private presentShape = new GLTFShape("models/static/present.glb")
     stealPresent = false
     runAway = false
     private present: Entity;
 
-    constructor(model:GLTFShape, path: Path3D, speed: number, handler:IEnemyEvent, needAddShootComponent) {
+    constructor(model: GLTFShape, path: Path3D, speed: number, handler: IEnemyEvent, needAddShootComponent) {
         super()
         this.handler = handler
         this.isLive = true
@@ -81,9 +81,9 @@ export class Enemy extends Entity {
     public addShootComponent() {
         this.addComponent(
             new OnPointerDown(() => {
-                    log('kill', this)
-                    if (this.isLive) this.kill('snowball')
-                },
+                log('kill', this)
+                if (this.isLive) this.kill('snowball')
+            },
                 {
                     button: ActionButton.ANY,
                     showFeedback: false,
@@ -112,8 +112,8 @@ export class Enemy extends Entity {
 
     die(showExplosion) {
         this.rayTrigger.setParent(null)
-        let rnd = Enemy.getRandomInt(1,4)
-        let clip = new AudioClip("sfx/snowballDie"+ rnd +".mp3")
+        let rnd = Enemy.getRandomInt(1, 4)
+        let clip = new AudioClip("sfx/snowballDie" + rnd + ".mp3")
         let source = new AudioSource(clip)
         source.playing = true
         source.loop = false
@@ -131,7 +131,7 @@ export class Enemy extends Entity {
         return explosionPosition
     }
 
-    update(dt:number) {
+    update(dt: number) {
         this.PatrolPath.update(dt)
         if (this.isLive) {
             const path = this.getComponent(PathData)
@@ -142,6 +142,14 @@ export class Enemy extends Entity {
                         this.runAway = true
                         this.isLive = false
                         this.present.setParent(null)
+                        
+                        let clip = new AudioClip("sfx/stolen.wav")
+                        let source = new AudioSource(clip)
+                        this.addComponentOrReplace(source)
+                        source.playing = true
+                        source.loop = false
+                        source.volume = 1
+                        
                         engine.removeEntity(this.present)
                         this.removeComponent(GLTFShape)
                         this.handler.onStealPresentAndRunAway(this)
@@ -157,6 +165,13 @@ export class Enemy extends Entity {
                         }))
                         this.present.setParent(this)
                         this.stealPresent = true
+
+                        let clip = new AudioClip("sfx/alarm.mp3")
+                        let source = new AudioSource(clip)
+                        this.addComponentOrReplace(source)
+                        source.playing = true
+                        source.loop = false
+                        source.volume = 1
                     }
                 }
             }
