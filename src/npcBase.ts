@@ -16,7 +16,7 @@ export class NPCBase extends NPC {
                 this.onActivateHandler()
             },
             {
-                faceUser: true,
+                faceUser: false,
                 reactDistance: 3,
                 continueOnWalkAway: true,
                 onlyClickTrigger: true,
