@@ -8,35 +8,45 @@ export class PlayerSpawn {
         {x: 19.84, y: 0, z: 5.07}
     ]
     colliderShape = new GLTFShape("models/static/snowFortCollider.glb")
-    private collider: Entity;
+    private colliders: Entity[] = [];
+    currentPointIndex = null
 
-    constructor() {
+    constructor(collidersCreated=true) {
         this.colliderShape.withCollisions = true
         this.colliderShape.isPointerBlocker = false
         this.colliderShape.visible = true
-        ///// сейчас есть проблема в том, что телепорт раньше срабатывает, чем появляется коллайдер
-        ///// надо коллайдер заранее инициализировать, иначе выбежать удается после телепортирования
+
+        this.spawnPositions.forEach(sp => {
+            this.addColleder(sp)
+        })
     }
 
-    spawn() {
-        this.collider = new Entity()
-        const pointIndex = LevelController.getRandomInt(0, 3)
-        const sp = this.spawnPositions[pointIndex]
-        this.collider.addComponent(new Transform({
+    addColleder(sp) {
+        const collider = new Entity()
+        collider.addComponent(new Transform({
             position: new Vector3(sp.x, sp.y, sp.z),
             rotation: new Quaternion(-8.300713665954172e-15, -0.9951847791671753, 1.1863526339084274e-7, -0.09801724553108215),
             scale: new Vector3(3, 3, 3)
         }))
-        this.collider.addComponentOrReplace(this.colliderShape)
-        engine.addEntity(this.collider)
+        collider.addComponentOrReplace(this.colliderShape)
+        engine.addEntity(collider)
+        this.colliders.push(collider)
+    }
 
+    spawn() {
+        this.colliderShape.visible = true
+        this.colliderShape.withCollisions = true
+        this.currentPointIndex = LevelController.getRandomInt(0, 3)
+        const sp = this.spawnPositions[this.currentPointIndex]
+        engine.addEntity(this.colliders[this.currentPointIndex])
+        // this.addColleder(sp)
         movePlayerTo(sp, {x: 8, y: 1, z: 8})
     }
 
     release() {
-        if (this.collider != null) {
-            engine.removeEntity(this.collider)
-            this.collider = null
+        if (this.currentPointIndex != null) {
+            engine.removeEntity(this.colliders[this.currentPointIndex])
+            this.currentPointIndex = null
         }
     }
 }

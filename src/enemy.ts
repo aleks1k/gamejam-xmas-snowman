@@ -99,12 +99,18 @@ export class Enemy extends Entity {
     }
 
     public kill(weapon) {
-        const pos = this.die(true)
-        log(pos)
+        const pos = this.getPosition()
         this.handler.onHit(this, pos)
     }
 
-    private die(showExplosion) {
+    getPosition() {
+        const explosionPosition = this.getComponent(Transform).position.clone()
+        explosionPosition.y += 0.5
+
+        return explosionPosition
+    }
+
+    die(showExplosion) {
         this.rayTrigger.setParent(null)
         let rnd = Enemy.getRandomInt(1, 4)
         let clip = new AudioClip("sfx/snowballDie" + rnd + ".mp3")
@@ -115,8 +121,7 @@ export class Enemy extends Entity {
         this.addComponentOrReplace(source)
         let explosionPosition = null
         if (showExplosion) {
-            explosionPosition = this.getComponent(Transform).position.clone()
-            explosionPosition.y += 0.5
+            explosionPosition = this.getPosition()
         }
 
         this.isLive = false
