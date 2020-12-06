@@ -35,7 +35,7 @@ export class LotteryNPC extends NPCBase {
         },
         {
             name: 'check_balance',
-            text: 'Wait seconds, I check your Matic balance.',
+            text: 'Wait a few seconds, I will check your matic balance.',
             isEndOfDialog: true
         },
         {
