@@ -79,6 +79,14 @@ engine.addEntity(snowmanEyes)
 engine.addSystem(snowmanEyes)
 snowmanEyes.setParent(snowmanNPC)
 
+const msgIncreased = new AnimationPicture("textures/increasedSprites.png", 6, 10, {
+  position: new Vector3(2.6, 4.1, 4.8),
+  scale: new Vector3(4, 0.8, 4),
+  rotation: Quaternion.Euler(0,90,0)
+}) 
+engine.addEntity(msgIncreased)
+engine.addSystem(msgIncreased) 
+
 const eggShape = new GLTFShape("models/egg.glb")
 const egg1 = new Entity()
 egg1.addComponentOrReplace(eggShape)
