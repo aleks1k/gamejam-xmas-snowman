@@ -35,7 +35,7 @@ export class LotteryNPC extends NPCBase {
         },
         {
             name: 'check_balance',
-            text: 'Wait seconds, I check your matic balance.',
+            text: 'Wait seconds, I check your Matic balance.',
             isEndOfDialog: true
         },
         {
@@ -73,7 +73,7 @@ export class LotteryNPC extends NPCBase {
         },
         {
             name: 'complete',
-            text: `Thank you! Good Luck! Lottery results will be on 25 of Dec!`,
+            text: `Thank you! Good Luck! Lottery results will be on 25th of Dec!`,
             triggeredByNext: () => {
                 this.startDance()
             },
