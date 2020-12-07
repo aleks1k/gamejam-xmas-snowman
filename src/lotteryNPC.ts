@@ -7,7 +7,15 @@ export class LotteryNPC extends NPCBase {
     santaDlg: Dialog[] = [
         {
             name: 'start',
-            text: 'Ho-ho-ho. Merry Christmas!'
+            text: 'Ho-ho-ho. Merry Christmas!',
+            triggeredByNext:() => {
+                if (this.eventHandler != null) this.eventHandler.onStartTalk('lottery')
+
+                //debug
+                // this.eventHandler.onCustomEvent('lottery', 'buyTicket', {count:1, res: ''})
+
+            },
+            // isEndOfDialog: true
         },
         {
             text: "I'm here to spread the festive cheer. You can win big prizes for Christmas in my lottery!"
