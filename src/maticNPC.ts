@@ -52,8 +52,10 @@ export class MaticNPC extends NPCBase {
             text: `I can help you top up your Matic MANA balance.`,
         },
         {
-            text: `At any time you can deposit or withdraw Matic MANA by speaking to me.
-            Allowing you to spend your mana on a variety of things including: Xmas Lottery, Casinos within DCL, QuizZone and more including wearables in the future`,
+            text: 'At any time you can deposit or withdraw Matic MANA by speaking to me.'
+        },
+        {
+            text: 'Allowing you to spend your mana on a variety of things including: Xmas Lottery, Casinos within DCL, QuizZone and more including wearables in the future',
         },
         {
             name: 'top_up_start',

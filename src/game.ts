@@ -24,7 +24,7 @@ getCurrentRealm().then(realm => {
     const hudAttachEntities = [
       // 'LotteryStand','snowmanNPC'
       // 'MaticNPC','LotteryNPC',
-      'animationPicture'
+      'collider'
     ]
 
     for (const e in engine.entities) {

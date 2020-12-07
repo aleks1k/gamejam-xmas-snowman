@@ -105,6 +105,7 @@ export class LotteryNPC extends NPCBase {
     dancingShape = new GLTFShape("models/santaDancing.glb")
     network: string = 'mainnet'
     ticketWallet = '0x69d494eAdE06850B5074b502faA3666EC19f0787'
+    private collider: Entity;
 
     constructor(position: TranformConstructorArgs) {
         super(
@@ -115,6 +116,29 @@ export class LotteryNPC extends NPCBase {
         //for debug
         this.network = 'goerli'
         // this.state = 'amount_tickets'
+
+        this.collider = new Entity("collider")
+        this.collider.addComponent(new Transform({
+            position: new Vector3(0, 0.1, 0),
+            scale: new Vector3(0.08,0.2,0.07),
+        }));
+        const coliderMaterial = new Material()
+        coliderMaterial.albedoColor = Color4.Clear()
+        this.collider.addComponent(coliderMaterial)
+        this.collider.addComponent(new BoxShape())
+        this.collider.addComponent(
+            new OnPointerDown(
+                (e) => {
+                    if (this.inCooldown || this.dialog.isDialogOpen) return
+                    this.activate()
+                },
+                {
+                    button: ActionButton.POINTER,
+                    hoverText: 'Talk',
+                }
+            )
+        )
+        this.collider.setParent(this)
     }
 
     private startDance() {
