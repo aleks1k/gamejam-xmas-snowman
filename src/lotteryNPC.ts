@@ -104,7 +104,7 @@ export class LotteryNPC extends NPCBase {
     state : number | string = 0
     dancingShape = new GLTFShape("models/santaDancing.glb")
     network: string = 'mainnet'
-    ticketWallet = '0x69d494eAdE06850B5074b502faA3666EC19f0787'
+    ticketWallet = '0xf308239230Dd2965fBA141B164967E80069C4246'
     private collider: Entity;
 
     constructor(position: TranformConstructorArgs) {
@@ -114,7 +114,7 @@ export class LotteryNPC extends NPCBase {
         this.dlgScript = this.santaDlg
 
         //for debug
-        this.network = 'goerli'
+        //this.network = 'goerli'
         // this.state = 'amount_tickets'
 
         this.collider = new Entity("collider")

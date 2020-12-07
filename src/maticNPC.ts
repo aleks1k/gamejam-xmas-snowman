@@ -130,7 +130,7 @@ export class MaticNPC extends NPCBase {
         this.dlgScript = this.maticDlg
 
         //for debug
-        this.network = 'goerli'
+        //this.network = 'goerli'
     }
 
     updateBalanceText() {

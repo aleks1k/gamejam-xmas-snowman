@@ -14,8 +14,8 @@ import { movePlayerTo } from "@decentraland/RestrictedActions";
 import {getUserAccount} from "@decentraland/EthereumController";
 import {INpcEvents} from "./npcBase";
 
-// const serverUrl = "wss://xmas-api.dapp-craft.com/"
-const serverUrl = "ws://127.0.0.1:3000/"
+const serverUrl = "wss://xmas-api.dapp-craft.com/"
+// const serverUrl = "ws://127.0.0.1:3000/"
 
 engine.addEntity(static_scene)
 getCurrentRealm().then(realm => {
