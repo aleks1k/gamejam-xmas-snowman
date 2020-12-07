@@ -75,8 +75,10 @@ export class Snowball extends Weapon implements ISystem {
         // this.removeComponent(OnPointerDown)
         // this.getComponent(utils.KeepRotatingComponent).stop()
         // this.removeComponent(utils.KeepRotatingComponent)
-        super.take()
-        if(this.takeHandler != null) this.takeHandler()
+        if (!this.getComponent(WeaponComponent).attached) {
+            super.take()
+            if (this.takeHandler != null) this.takeHandler()
+        }
     }
 
     fire() {

@@ -1,6 +1,11 @@
 import { NPC } from '../node_modules/@dcl/npc-utils/index'
 import { Dialog } from '../node_modules/@dcl/npc-utils/utils/types'
 
+export interface INpcEvents {
+    onStartTalk(npcId: string);
+    onCustomEvent(npcId: string, event: string, params: any);
+}
+
 export class NPCBase extends NPC {
     dlgScript: Dialog[]
     fillInCanvas: UIInputText
@@ -8,6 +13,7 @@ export class NPCBase extends NPC {
     active = true
     state : number | string = 0
     private soundEnt: Entity;
+    eventHandler: INpcEvents = null;
 
     constructor(position: TranformConstructorArgs, model: string, dialogSound=null, idleAnim=null) {
         super(
@@ -93,5 +99,9 @@ export class NPCBase extends NPC {
     textSubmit() {
         this.hideInputText()
         this.onTextSubmit(this.submittedText)
+    }
+
+    setEventHandler(eventHandler:INpcEvents) {
+        this.eventHandler = eventHandler
     }
 }

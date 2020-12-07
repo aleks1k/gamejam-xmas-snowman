@@ -8,10 +8,6 @@ export class GameUI {
 
     score = new ui.UICounter(0, -80, 100, this.color)
     scoreLabel = new ui.CornerLabel('DESTROYED:', -170, 100, this.color)
-
-    // health = new ui.UIBar(1, -30, 60, Color4.Red(), BarStyles.ROUNDSILVER, 1)
-    // healthLabel = new ui.CornerLabel('Health:', -170, 55, this.color)
-
     presentsCounter = new ui.LargeIcon('textures/presents.png', 0, 40, 64*5, 64)
 
     constructor() {
@@ -21,7 +17,7 @@ export class GameUI {
 
     setPresentCount(count) {
         this.presentsCounter.image.sourceLeft = 128 * (5 - count)
-        this.presentsCounter.image.positionX = 128 * (5 - count)
+        this.presentsCounter.image.positionX = 64 * (5 - count)
     }
 
     visible(val:boolean) {

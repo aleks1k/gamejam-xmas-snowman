@@ -44,4 +44,8 @@ export class AnimationPicture extends Entity implements ISystem {
             this.dt += dt
         }
     }
+
+    setVisible(visible:boolean) {
+        this.getComponent(PlaneShape).visible = visible
+    }
 }

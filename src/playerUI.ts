@@ -7,7 +7,6 @@ export interface ISceneUIEvent {
 }
 
 export class PlayerUI {
-    private uiPlayAgain: UIImage
     private uiGameOver: UIImage
     private canvas: UICanvas
     private uiEventHandler: ISceneUIEvent
@@ -19,7 +18,6 @@ export class PlayerUI {
     private uiArrowLeft: UIImage
     private isCountDown = false
     private menuBtn: UIImage
-    private closeBtn: UIImage
     private discordBtn: UIImage
     private isOpenedMenu: boolean = false
     public endGameBtn: UIImage;
@@ -58,20 +56,6 @@ export class PlayerUI {
                 'No'
             )
 
-        })
-
-        this.closeBtn = new UIImage(this.canvas, new Texture("textures/uiClose.png"))
-        this.closeBtn.width = "160"
-        this.closeBtn.height = "40"
-        this.closeBtn.sourceWidth = 220
-        this.closeBtn.sourceHeight = 51
-        this.closeBtn.positionY = 10
-        this.closeBtn.positionX = 0
-        this.closeBtn.vAlign = "bottom"
-        this.closeBtn.hAlign = "center"
-        this.closeBtn.visible = false
-        this.closeBtn.onClick = new OnClick(() => {
-            this.closeMenu()
         })
 
         this.menuBtn = new UIImage(this.canvas, new Texture("textures/menuBtn.png"))
@@ -142,7 +126,6 @@ export class PlayerUI {
     }
 
     public initGameOverUI() {
-
         this.uiGameOver = new UIImage(this.canvas, new Texture("textures/gameover.png"))
         this.uiGameOver.width = "462"
         this.uiGameOver.height = "117"
@@ -151,19 +134,6 @@ export class PlayerUI {
         this.uiGameOver.positionY = 550
         this.uiGameOver.vAlign = "bottom"
         this.uiGameOver.visible = false
-
-        this.uiPlayAgain = new UIImage(this.canvas, new Texture("textures/playagain.png"))
-        this.uiPlayAgain.width = "294"
-        this.uiPlayAgain.height = "89"
-        this.uiPlayAgain.sourceWidth = 294
-        this.uiPlayAgain.sourceHeight = 89
-        this.uiPlayAgain.positionY = 30
-        this.uiPlayAgain.vAlign = "top"
-        this.uiPlayAgain.visible = false
-        this.uiPlayAgain.isPointerBlocker = true
-        this.uiPlayAgain.onClick = new OnClick(() => {
-            this.reset()
-        })
     }
 
     update(dt: number) {
@@ -194,7 +164,7 @@ export class PlayerUI {
         let NameColumn = 'Name\n'
         let ScoreColumn = 'Score\n'
         data.forEach(s => {
-            NameColumn += s.userName + '\n'
+            NameColumn += s.name + '\n'
             ScoreColumn += s.score + '\n'
         })
         let prompt = new ui.CustomPrompt(PromptStyles.LIGHTLARGE,400, 400)
@@ -214,6 +184,7 @@ export class PlayerUI {
             },
             ButtonStyles.E
         )
+        this.endGameBtn.visible = false
     }
 
     public kill() {
@@ -221,23 +192,17 @@ export class PlayerUI {
     }
 
     private reset() {
-        this.closeBtn.visible = true
-        // this.uiPlayAgain.visible = false
         this.uiGameOver.visible = false
         this.uiEventHandler.onRestart()
-        log("PLAY AGAIN")
     }
 
     closeMenu() {
         this.isOpenedMenu = !this.isOpenedMenu
         this.menuBtn.visible = !this.menuBtn.visible
-        this.closeBtn.visible = !this.closeBtn.visible
         this.discordBtn.visible = !this.discordBtn.visible
     }
 
     private endGame() {
-        this.closeBtn.visible = false
-        // this.uiPlayAgain.visible = true
         this.uiGameOver.visible = false
         this.uiEventHandler.onEndGame()
     }

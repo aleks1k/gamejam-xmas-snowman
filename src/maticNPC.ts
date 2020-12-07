@@ -6,7 +6,10 @@ export class MaticNPC extends NPCBase {
     maticDlg: Dialog[] = [
         {
             name: '1_start',
-            text: 'Hello, I’m Matic bot!'
+            text: 'Hello, I’m Matic bot!',
+            triggeredByNext:() => {
+                this.eventHandler.onStartTalk('manaBot')
+            }
         },
         {
             name: '1_1_start',
@@ -158,6 +161,7 @@ export class MaticNPC extends NPCBase {
             const res = await layerTwo.matic.depositMana(amount, this.network).then((res) =>
             {
                 log(res)
+                this.eventHandler.onCustomEvent('manaBot', 'depositMana', {amount:amount, res: res})
                 this.talk(this.dlgScript, 'top_up_complete')
             }).catch((e) =>
             {

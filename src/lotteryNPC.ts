@@ -106,6 +106,7 @@ export class LotteryNPC extends NPCBase {
 
         //for debug
         this.network = 'goerli'
+        // this.state = 'amount_tickets'
     }
 
     private startDance() {
@@ -118,6 +119,7 @@ export class LotteryNPC extends NPCBase {
             const res = await matic.sendMana(this.ticketWallet, amount, true, this.network).then((res) =>
             {
                 log(res)
+                this.eventHandler.onCustomEvent('lottery', 'buyTicket', {count:count, res: res})
                 this.talk(this.dlgScript, 'complete')
             }).catch((e) =>
             {

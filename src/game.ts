@@ -11,6 +11,11 @@ import { getCurrentRealm } from "@decentraland/EnvironmentAPI";
 import { BuilderHUD } from "./builderHUD/BuilderHUD";
 import { LotteryStand } from "./lotteryStand";
 import { movePlayerTo } from "@decentraland/RestrictedActions";
+import {getUserAccount} from "@decentraland/EthereumController";
+import {INpcEvents} from "./npcBase";
+
+// const serverUrl = "wss://xmas-api.dapp-craft.com/"
+const serverUrl = "ws://127.0.0.1:3000/"
 
 engine.addEntity(static_scene)
 getCurrentRealm().then(realm => {
@@ -19,7 +24,7 @@ getCurrentRealm().then(realm => {
     const hudAttachEntities = [
       // 'LotteryStand','snowmanNPC'
       // 'MaticNPC','LotteryNPC',
-      // 'stealPresent'
+      'animationPicture'
     ]
 
     for (const e in engine.entities) {
@@ -78,14 +83,6 @@ const snowmanEyes = new AnimationPicture("textures/eyesSprites.png", 14, 2, {
 engine.addEntity(snowmanEyes)
 engine.addSystem(snowmanEyes)
 snowmanEyes.setParent(snowmanNPC)
-
-const msgIncreased = new AnimationPicture("textures/increasedSprites.png", 6, 10, {
-  position: new Vector3(2.6, 4.1, 4.8),
-  scale: new Vector3(4, 0.8, 4),
-  rotation: Quaternion.Euler(0,90,0)
-}) 
-engine.addEntity(msgIncreased)
-engine.addSystem(msgIncreased) 
 
 const eggShape = new GLTFShape("models/egg.glb")
 const egg1 = new Entity()
@@ -154,7 +151,7 @@ const lotteryScene = new LotteryStand({
   scale: new Vector3(1, 1, 1)
 })
 lotteryScene.setParent(static_scene)
-lotteryScene.updateInfo(500000, 10000000, 1000, 200)
+// lotteryScene.updateInfo(500000, 10000000, 1000, 200)
 
 const santa = new LotteryNPC({
   position: new Vector3(-2.3, 0.05, 2.7),
@@ -179,6 +176,11 @@ const gameController = new LevelController(new class implements IGameEvents {
     snowball.drop()
     snowmanNPC.show()
     playerSpawn.release()
+
+    sendMessage(socket, 'score', {
+      score: score,
+      level: level
+    })
   }
 
   onExit() {
@@ -198,6 +200,7 @@ const gameController = new LevelController(new class implements IGameEvents {
   }
 
   onStart() {
+    snowball.take()
     snowmanNPC.hide()
     playerSpawn.spawn()
   }
@@ -206,4 +209,108 @@ engine.addSystem(gameController)
 
 Input.instance.subscribe("BUTTON_DOWN", ActionButton.SECONDARY, false, (e) => {
   log('USER POSITION: ', Camera.instance.position)
+})
+
+let socket = null
+
+function sendMessage(socket:WebSocket, command:string, d:any) {
+  if (socket == null) {
+    santa.showError('Could not connect to backend server!')
+    return
+  }
+  const data = d
+  if (userAddress != null) {
+    data['userAddress'] = userAddress
+  }
+  data['command'] = command
+  log('sendMessage', data)
+  socket.send(JSON.stringify(data))
+}
+
+let npcEvents = new class implements INpcEvents {
+  onCustomEvent(npcId: string, event: string, params: any) {
+    params['npcId'] = npcId
+    if(event === 'buyTicket') {
+      sendMessage(socket, event, params)
+    } else if (event === 'depositMana') {
+      sendMessage(socket, event, params)
+    } else {
+      params['npcEvent'] = event
+      sendMessage(socket, 'sendEvent', params)
+    }
+  }
+
+  onStartTalk(npcId: string) {
+    log('onStartTalk_')
+    sendMessage(socket, 'talkNpc', {npcId: npcId})
+  }
+}
+santa.setEventHandler(npcEvents)
+maticNpc.setEventHandler(npcEvents)
+
+function connectSocket(userAddress) {
+  try {
+    socket = new WebSocket(serverUrl);
+  } catch (e) {
+    log(e)
+    socketReconnectSys.dt = 0
+  }
+
+  socket.onmessage = function (event) {
+    try {
+      const msg = JSON.parse(event.data)
+      log(msg)
+      if (msg.type === 'updateState') {
+        lotteryUI.updateTask(msg.tiketsCount, msg.tasksState)
+      } else if (msg.type === 'scoreTable') {
+        gameController.showHighscore(msg.table)
+      } else if (msg.type === 'lotteryInfoUpdate') {
+        lotteryScene.updateInfo(msg.lotteryState.mainPrize, msg.lotteryState.pool, msg.lotteryState.tickets, msg.lotteryState.winnerPlaces)
+      } else if (msg.type === 'updateStream') {
+        // TODO
+      }
+    } catch (error) {
+      log(error);
+    }
+  };
+
+  socket.onopen = function (event) {
+    log('connect', userAddress)
+    sendMessage(socket, 'connect', {})
+  }
+
+  socket.onclose = function(e) {
+    log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+    socketReconnectSys.dt = 0
+  };
+
+  socket.onerror = function(err) {
+    log('Socket encountered error: ', err.message, 'Closing socket');
+    socket.close();
+  };
+}
+
+const socketReconnectSys = new class implements ISystem {
+  reconnectTimeout = 10
+  dt = this.reconnectTimeout
+
+  update(dt: number) {
+    if(this.dt > this.reconnectTimeout) {
+      if (socket == null || socket.readyState == WebSocket.CLOSED) {
+        connectSocket(userAddress)
+      }
+    } else {
+      this.dt += dt
+    }
+  }
+}
+engine.addSystem(socketReconnectSys)
+
+let userAddress = null
+
+getUserAccount().then(address => {
+  userAddress = address
+  connectSocket(address)
+}).catch(reason => {
+  santa.showError(reason.toString())
 })

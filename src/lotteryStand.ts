@@ -1,8 +1,14 @@
+import {AnimationPicture} from "./animationPicture";
+
 export class LotteryStand extends Entity {
     private mainPrizeCounter: TextShape;
     private poolCounter: TextShape;
     private ticketsCounter: TextShape;
-    private usersCounter: TextShape;
+    private winnerPlacesCounter: TextShape;
+    private dt: number;
+    private alertTimer: number = 5;
+    private msgIncreased: AnimationPicture;
+    private alertActive: boolean = false;
 
     constructor(position: TranformConstructorArgs) {
         super('LotteryStand');
@@ -21,7 +27,7 @@ export class LotteryStand extends Entity {
             rotation: Quaternion.Euler(0, -90, 0),
             scale: new Vector3(1, 1, 1)
         })
-        this.usersCounter = this.createCounter(2.4, Color3.White(),
+        this.winnerPlacesCounter = this.createCounter(2.4, Color3.White(),
             {
             position: new Vector3(-3.07,2.97,1.97),
             rotation: Quaternion.Euler(0, -90, 0),
@@ -33,6 +39,23 @@ export class LotteryStand extends Entity {
             rotation: Quaternion.Euler(0, -90, 0),
             scale: new Vector3(1, 1, 1)
         })
+
+        this.msgIncreased = new AnimationPicture("textures/increasedSprites.png", 6, 10, {
+            position: new Vector3(-3.03,4.15,0.63),
+            scale: new Vector3(4, 0.8, 4),
+            rotation: Quaternion.Euler(0,-90,0)
+        })
+        this.msgIncreased.setParent(this)
+        this.msgIncreased.setVisible(this.alertActive)
+
+        const clip = new AudioClip("sfx/coin.wav")
+        let source = new AudioSource(clip)
+        source.playing = false
+        source.loop = false
+        source.volume = 1
+        this.addComponentOrReplace(source)
+
+        engine.addSystem(this)
     }
 
     createCounter(fontSize:number, color:Color3, position: TranformConstructorArgs) {
@@ -48,10 +71,25 @@ export class LotteryStand extends Entity {
         return prizeCounterShape
     }
 
-    updateInfo(mainPrize, pool, tickets, users) {
+    updateInfo(mainPrize, pool, tickets, winnerPlaces) {
         this.mainPrizeCounter.value = mainPrize
         this.poolCounter.value = pool
         this.ticketsCounter.value = tickets
-        this.usersCounter.value = users
+        this.winnerPlacesCounter.value = winnerPlaces
+        this.getComponent(AudioSource).playOnce()
+        this.dt = 0
+        this.alertActive = true
+        this.msgIncreased.setVisible(this.alertActive)
+        engine.addSystem(this.msgIncreased)
+    }
+
+    update(dt: number) {
+        if (this.dt > this.alertTimer && this.alertActive) {
+            this.alertActive = false
+            this.msgIncreased.setVisible(this.alertActive)
+            engine.removeSystem(this.msgIncreased)
+        } else {
+            this.dt += dt
+        }
     }
 }

@@ -16,7 +16,7 @@ export class LotteryUI {
     private hAlign: string = "left";
     private task_img_height = 30;
     private task_count = 4;
-    private ticket_count: UICounter;
+    private ticket_count: ui.UICounter;
     private uiShapes:UIShape[] = []
     private taskBtn: UIImage;
 
@@ -83,13 +83,13 @@ export class LotteryUI {
         }
 
         this.hide()
-
-        this.updateTask(99, [
-            TaskState.completed,
-            TaskState.active,
-            TaskState.active,
-            TaskState.inactive,
-        ])
+        //
+        // this.updateTask(99, [
+        //     TaskState.completed,
+        //     TaskState.active,
+        //     TaskState.active,
+        //     TaskState.inactive,
+        // ])
     }
 
     addTask(index:number, state:TaskState, task_count:number, task_img_height=30) {
@@ -97,7 +97,7 @@ export class LotteryUI {
         task.image.vAlign = this.vAlign
         task.image.hAlign = this.hAlign
         task.image.sourceTop = state*task_img_height*task_count + index*task_img_height
-        log(task.image.sourceTop)
+        // log(task.image.sourceTop)
 
         this.tasks.push(task)
         this.uiShapes.push(task.image)

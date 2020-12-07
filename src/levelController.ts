@@ -116,8 +116,8 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     }
 
     public restart() {
-        // this.ui.health.set(1)
-        this.ui.setPresentCount(this.stealMax)
+        this.stealPresents = 0
+        this.ui.setPresentCount(this.stealMax - this.stealPresents)
         this.ui.score.set(0)
         this.level = 5
         this.ui.level.set(this.level)
@@ -133,6 +133,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         this.factory.reset()
         this.state = GameState.NotStarted
         this.eventHandler.onExit()
+        this.sceneUI.endGameBtn.visible = false
     }
 
     update(dt: number) {
@@ -148,5 +149,9 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
 
     showHighscore(scoreTable: any) {
         this.sceneUI.showHighscore(scoreTable)
+    }
+
+    getCurrentScore() {
+        return this.ui.score.read()
     }
 }
