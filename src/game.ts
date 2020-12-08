@@ -29,7 +29,7 @@ getCurrentRealm().then(realm => {
     const hudAttachEntities = [
       // 'LotteryStand','snowmanNPC'
       // 'MaticNPC','LotteryNPC',
-      'static_scene'
+      'discordLink'
     ]
 
     for (const e in engine.entities) {
@@ -331,3 +331,21 @@ getUserAccount().then(address => {
 }).catch(reason => {
   santa.showError(reason.toString())
 })
+
+const discordLink = new Entity('discordLink')
+discordLink.addComponent(
+    new Transform({
+      position: new Vector3(25.5,0.6, 2),
+      scale: new Vector3(0.6, 0.6, 0.6),
+    })
+)
+discordLink.addComponent(new GLTFShape('models/discord.glb'))
+discordLink.addComponent(
+    new OnPointerDown(
+        (e) => {
+          openExternalURL("https://discord.gg/2dmBNae")
+        },
+        { hoverText: 'Join the Discussion', button: ActionButton.POINTER }
+    )
+)
+discordLink.setParent(static_scene)
