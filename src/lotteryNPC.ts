@@ -4,10 +4,12 @@ import {matic} from '../node_modules/@dcl/l2-utils/index'
 
 export class LotteryNPC extends NPCBase {
     ticketPrice = 10
+    ava = { path: 'textures/avaSanta.png', offsetX: -700 }
     santaDlg: Dialog[] = [
         {
             name: 'start',
             text: 'Ho-ho-ho. Merry Christmas!',
+            image: this.ava,
             triggeredByNext:() => {
                 if (this.eventHandler != null) this.eventHandler.onStartTalk('lottery')
 
@@ -18,14 +20,17 @@ export class LotteryNPC extends NPCBase {
             // isEndOfDialog: true
         },
         {
-            text: "I'm here to spread the festive cheer. You can win big prizes for Christmas in my lottery!"
+            text: "I'm here to spread the festive cheer. You can win big prizes for Christmas in my lottery!",
+            image: this.ava,
         },
         {
-            text: 'The lottery is designed so that all the money from ticket sales go into the prize pool.'
+            text: 'The lottery is designed so that all the money from ticket sales go into the prize pool.',
+            image: this.ava,
         },
         {
             name: 'buy_tickets',
             text: 'Lottery ticket price is '+this.ticketPrice+' MANA, accepting only Matic transactions. Do you want buy tickets?',
+            image: this.ava,
             isQuestion: true,
             buttons: [
                 {label: `Yes`, goToDialog: 'check_balance',
@@ -44,16 +49,19 @@ export class LotteryNPC extends NPCBase {
         {
             name: 'check_balance',
             text: 'Wait a few seconds, I will check your matic balance.',
+            image: this.ava,
             isEndOfDialog: true
         },
         {
             name: 'no_matic_mana',
             text: 'You need to top up your Matic MANA Balance. Find the Robot (Matic Bot), he will help you to top up your balance.',
+            image: this.ava,
             isEndOfDialog: true
         },
         {
             name: 'amount_tickets',
             text: 'How many tickets do you want?!',
+            image: this.ava,
             isQuestion: true,
             buttons: [
                 {label: `5 - `+this.ticketPrice*5+' MANA', goToDialog: 'approve_transfer',
@@ -77,11 +85,13 @@ export class LotteryNPC extends NPCBase {
         {
             name: 'approve_transfer',
             text: 'Sign in Metamask for approve transfer',
+            image: this.ava,
             isEndOfDialog: true,
         },
         {
             name: 'complete',
             text: `Thank you! Good Luck! Lottery results will be on 25th of Dec!`,
+            image: this.ava,
             triggeredByNext: () => {
                 this.startDance()
             },
@@ -90,11 +100,13 @@ export class LotteryNPC extends NPCBase {
         {
             name: 'end',
             text: `Fine, see you soon!`,
+            image: this.ava,
             isEndOfDialog: true,
         },
         {
             name: 'error',
             text: `Opps, some error!`,
+            image: this.ava,
             isEndOfDialog: true,
         }
     ]

@@ -3,13 +3,16 @@ import * as layerTwo from '../node_modules/@dcl/l2-utils/index'
 import {NPCBase} from "./npcBase";
 
 export class MaticNPC extends NPCBase {
+
+    ava = { path: 'textures/avaMatic.png', offsetX: -700 }
     maticDlg: Dialog[] = [
         {
             name: '1_start',
             text: 'Hello, I’m Matic bot!',
             triggeredByNext:() => {
                 this.eventHandler.onStartTalk('manaBot')
-            }
+            },
+            image: this.ava
         },
         {
             name: '1_1_start',
@@ -18,10 +21,12 @@ export class MaticNPC extends NPCBase {
                 const balance = this.getMaticBalance()
             },
             isEndOfDialog: true,
+            image: this.ava
         },
         {
             name: '1_no_mana',
             text: 'You do not have enough MANA!',
+            image: this.ava
         },
         {
             text: 'You need to buy more MANA!',
@@ -41,25 +46,31 @@ export class MaticNPC extends NPCBase {
                         openExternalURL('https://app.uniswap.org/#/swap');
                     }
                 },
-            ]
+            ],
+            image: this.ava
         },
         {
             name: '1_balance',
-            text: ''
+            text: '',
+            image: this.ava
         },
         {
             name: 'top_up_intro',
             text: `I can help you top up your Matic MANA balance.`,
+            image: this.ava
         },
         {
-            text: 'At any time you can deposit or withdraw Matic MANA by speaking to me.'
+            text: 'At any time you can deposit or withdraw Matic MANA by speaking to me.',
+            image: this.ava
         },
         {
             text: 'Allowing you to spend your mana on a variety of things including: Xmas Lottery, Casinos within DCL, QuizZone and more including wearables in the future',
+            image: this.ava
         },
         {
             name: 'top_up_start',
             text: `Do you want to top up your Matic MANA balance?`,
+            image: this.ava,
             isQuestion: true,
             buttons: [
                 {label: `Yes`, goToDialog: 'top_up_input',
@@ -78,6 +89,7 @@ export class MaticNPC extends NPCBase {
         {
             name: 'top_up_input',
             text: `Enter the amount of MANA:`,
+            image: this.ava,
             offsetY: 50,
             triggeredByNext: () => {
                 this.hideInputText()
@@ -95,25 +107,30 @@ export class MaticNPC extends NPCBase {
         {
             name: 'top_up_send',
             text: `You will have to sign TWO transactions`,
+            image: this.ava
         },
         {
             text: `After main MANA is withdrawn, matic MANA will appear shortly`,
             isEndOfDialog: true,
+            image: this.ava
         },
         {
             name: 'top_up_complete',
             text: `Complete! The whole procedure takes 5-10 minutes`,
             isEndOfDialog: true,
+            image: this.ava
         },
         {
             name: 'end',
             text: `Fine, see you soon!`,
             isEndOfDialog: true,
+            image: this.ava
         },
         {
             name: 'error',
             text: `Opps, some error!`,
             isEndOfDialog: true,
+            image: this.ava
         }
     ]
     fillInCanvas: UIInputText
