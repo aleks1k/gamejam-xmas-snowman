@@ -296,7 +296,7 @@ const socketReconnectSys = new class implements ISystem {
 
   update(dt: number) {
     if(this.dt > this.reconnectTimeout) {
-      if (socket == null || socket.readyState == WebSocket.CLOSED) {
+      if (userAddress != null && (socket == null || socket.readyState == WebSocket.CLOSED)) {
         connectSocket(userAddress)
       }
     } else {
