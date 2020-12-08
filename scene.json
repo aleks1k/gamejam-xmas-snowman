@@ -1,13 +1,15 @@
 {
   "display": {
-    "title": "interactive-text",
+    "title": "Xmas Game Jam Lottery by DC",
+    "description": "Xmas Game Jam Lottery and Game by Dapp-Craft",
+    "navmapThumbnail": "https://dcl-dapp-craft.storage.googleapis.com/xmas_scene_logo.png",
     "favicon": "favicon_asset"
   },
   "contact": {
-    "name": "author-name",
-    "email": ""
+    "name": "Dapp-Craft",
+    "email": "decenterlandlord@gmail.com"
   },
-  "owner": "",
+  "owner": "Dapp-Craft",
   "scene": {
     "parcels": [
       "-61,-109",
