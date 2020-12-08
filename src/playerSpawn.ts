@@ -3,9 +3,9 @@ import {movePlayerTo} from "@decentraland/RestrictedActions";
 
 export class PlayerSpawn {
     spawnPositions = [
-        {x: 15.51, y: 0, z: 6.19},
-        {x: 10.93, y: 0, z: 7.13},
-        {x: 19.84, y: 0, z: 5.07}
+        {x: 26.61, y: 0, z: 19.70},
+        {x: 25.80, y: 0, z: 15.51},
+        {x: 24.77, y: 0, z: 10.88}
     ]
     colliderShape = new GLTFShape("models/static/snowFortCollider.glb")
     private colliders: Entity[] = [];
@@ -40,7 +40,7 @@ export class PlayerSpawn {
         const sp = this.spawnPositions[this.currentPointIndex]
         engine.addEntity(this.colliders[this.currentPointIndex])
         // this.addColleder(sp)
-        movePlayerTo(sp, {x: 8, y: 1, z: 8})
+        movePlayerTo(sp, {x: -7, y: 1, z: -23})
     }
 
     release() {

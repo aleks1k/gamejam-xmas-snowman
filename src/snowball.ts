@@ -1,7 +1,6 @@
 import utils from "../node_modules/decentraland-ecs-utils/index"
 import { Weapon } from "./weapon";
 import { WeaponComponent } from "./WeaponComponent";
-import { movePlayerTo } from '@decentraland/RestrictedActions'
 
 const camera = Camera.instance
 

@@ -22,9 +22,8 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     level: number = 0
     stealPresents: number = 0
     addScore = 1
-
-    snowmanSpawnPoint = new Vector3(23, 0, 25)
-    presentsTargetPoint = new Vector3(5.5, 0, 22)
+    snowmanSpawnPoint = new Vector3(6.5, 0, 23.11)
+    presentsTargetPoint = new Vector3(7.18, 0, 4.6)
     private stealMax: number = 5;
     private weapon: Weapon;
 
@@ -94,7 +93,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
             const points = []
             points[0] = this.snowmanSpawnPoint
             for (let j = 1; j < LevelController.getRandomInt(3, 7 + (this.level * 2)); j++) {
-                points[j] = new Vector3(LevelController.getRandomInt(7, 23), 0, LevelController.getRandomInt(22, 28))
+                points[j] = new Vector3(LevelController.getRandomInt(7, 11), 0, LevelController.getRandomInt(5, 24))
             }
             points.push(this.presentsTargetPoint)
             points.push(this.snowmanSpawnPoint)

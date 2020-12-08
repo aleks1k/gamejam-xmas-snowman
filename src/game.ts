@@ -1,21 +1,26 @@
-import { static_scene } from "./static";
-import { Snowball } from "./snowball";
-import { SnowmanNPC } from "./snowmanNPC";
-import { AnimationPicture } from "./animationPicture";
-import { LevelController } from "./levelController";
-import { PlayerSpawn } from "./playerSpawn";
-import { MaticNPC } from "./maticNPC";
-import { LotteryNPC } from "./lotteryNPC";
-import { LotteryUI } from "./lotteryUI";
-import { getCurrentRealm } from "@decentraland/EnvironmentAPI";
-import { BuilderHUD } from "./builderHUD/BuilderHUD";
-import { LotteryStand } from "./lotteryStand";
-import { movePlayerTo } from "@decentraland/RestrictedActions";
+import {static_scene} from "./static";
+import {Snowball} from "./snowball";
+import {SnowmanNPC} from "./snowmanNPC";
+import {AnimationPicture} from "./animationPicture";
+import {LevelController} from "./levelController";
+import {PlayerSpawn} from "./playerSpawn";
+import {MaticNPC} from "./maticNPC";
+import {LotteryNPC} from "./lotteryNPC";
+import {LotteryUI} from "./lotteryUI";
+import {getCurrentRealm} from "@decentraland/EnvironmentAPI";
+import {BuilderHUD} from "./builderHUD/BuilderHUD";
+import {LotteryStand} from "./lotteryStand";
+import {movePlayerTo, PredefinedEmote, triggerEmote} from "@decentraland/RestrictedActions";
 import {getUserAccount} from "@decentraland/EthereumController";
 import {INpcEvents} from "./npcBase";
 
 const serverUrl = "wss://xmas-api.dapp-craft.com/"
 // const serverUrl = "ws://127.0.0.1:3000/"
+
+static_scene.addComponentOrReplace(new Transform({
+  position: new Vector3(32, 0, 0),
+  rotation: Quaternion.Euler(0, -90, 0)
+}))
 
 engine.addEntity(static_scene)
 getCurrentRealm().then(realm => {
@@ -24,7 +29,7 @@ getCurrentRealm().then(realm => {
     const hudAttachEntities = [
       // 'LotteryStand','snowmanNPC'
       // 'MaticNPC','LotteryNPC',
-      'collider'
+      'static_scene'
     ]
 
     for (const e in engine.entities) {
@@ -75,14 +80,14 @@ snowmanNPC.name = 'snowmanNPC'
 //     scale: new Vector3(1, 1, 1)
 // }))
 // present.setParent(snowmanNPC)
+snowmanNPC.setParent(static_scene)
 
 const snowmanEyes = new AnimationPicture("textures/eyesSprites.png", 14, 2, {
   position: new Vector3(-0.03, 0.68, 0.1),
   scale: new Vector3(0.13, 0.04, 0.13)
 })
-engine.addEntity(snowmanEyes)
-engine.addSystem(snowmanEyes)
 snowmanEyes.setParent(snowmanNPC)
+engine.addSystem(snowmanEyes)
 
 const eggShape = new GLTFShape("models/egg.glb")
 const egg1 = new Entity()
@@ -105,19 +110,30 @@ egg1.addComponent(
     }
   )
 )
-engine.addEntity(egg1)
+egg1.setParent(static_scene)
 
 class EggSystem implements ISystem {
+  dt = 0
+  emoteTimer = 10
+
   update(dt: number) {
     const u = Camera.instance.position
-    if (u.x < 23 && u.x > 22 && u.y < 2 && u.y > 0 && u.z < 26 && u.z > 25) {
-      movePlayerTo({ x: 12.9, y: 2, z: 30.5 })
+    if (u.x < 7 && u.x > 6 && u.y < 2 && u.y > 0 && u.z < 25 && u.z > 22) {
+      movePlayerTo({ x: 2, y: 2, z: 14})
       let clip = new AudioClip("sfx/egg.wav")
       let source = new AudioSource(clip)
       egg1.addComponentOrReplace(source)
       source.playing = true
       source.loop = false
       source.volume = 1
+    }
+    this.dt += dt
+    if (u.x < 99 && u.x > 23 && u.y < 10 && u.y > 0 && u.z < 8 && u.z > 0) {
+      if(this.dt > this.emoteTimer) {
+        triggerEmote({predefined: PredefinedEmote.MONEY})
+        log('Emote')
+        this.dt = 0
+      }
     }
   }
 }
@@ -143,7 +159,7 @@ egg2.addComponent(
     }
   )
 )
-engine.addEntity(egg2)
+egg2.setParent(static_scene)
 
 const lotteryScene = new LotteryStand({
   position: new Vector3(5.6, 0, 4.1),
@@ -266,6 +282,7 @@ function connectSocket(userAddress) {
         gameController.showHighscore(msg.table)
       } else if (msg.type === 'lotteryInfoUpdate') {
         lotteryScene.updateInfo(msg.lotteryState.mainPrize, msg.lotteryState.pool, msg.lotteryState.tickets, msg.lotteryState.winnerPlaces)
+        triggerEmote({predefined: PredefinedEmote.FIST_PUMP})
       } else if (msg.type === 'updateStream') {
         // TODO
       }
