@@ -139,6 +139,7 @@ export class MaticNPC extends NPCBase {
     active = true
     state : number | string = 0
     private balance: { l1: number; l2: number };
+    userAddress: string = null;
 
     constructor(position: TranformConstructorArgs) {
         super(
@@ -156,7 +157,7 @@ export class MaticNPC extends NPCBase {
 
     private getMaticBalance() {
         executeTask(async () => {
-            await layerTwo.matic.balance(null, this.network).then((res) =>
+            await layerTwo.matic.balance(this.userAddress, this.network).then((res) =>
             {
                 this.balance = res
                 log(this.balance)
@@ -172,7 +173,14 @@ export class MaticNPC extends NPCBase {
             })
         })
     }
+    onActivateHandler() {
+        super.onActivateHandler()
+        if (this.userAddress == null) {
+            this.endInteraction()
+            this.showError("Can not detect your ETH address, please reload page!")
+        }
 
+    }
     textSubmit() {
         super.textSubmit();
         executeTask(async () => {

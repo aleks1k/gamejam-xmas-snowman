@@ -118,6 +118,7 @@ export class LotteryNPC extends NPCBase {
     network: string = 'mainnet'
     ticketWallet = '0xf308239230Dd2965fBA141B164967E80069C4246'
     private collider: Entity;
+    userAddress: string = null;
 
     constructor(position: TranformConstructorArgs) {
         super(
@@ -172,9 +173,17 @@ export class LotteryNPC extends NPCBase {
             log(res)
         })
     }
+
+    onActivateHandler() {
+        super.onActivateHandler()
+        if (this.userAddress == null) {
+            this.endInteraction()
+            this.showError("Can not detect your ETH address, please reload page!")
+        }
+    }
     private checkMaticBalance() {
         executeTask(async () => {
-            await matic.balance(null, this.network).then((balance) =>
+            await matic.balance(this.userAddress, this.network).then((balance) =>
             {
                 log(balance)
                 if (balance.l2 < 10) {

@@ -325,9 +325,29 @@ engine.addSystem(socketReconnectSys)
 
 let userAddress = null
 
-getUserAccount().then(address => {
-  userAddress = address
-  connectSocket(address)
+
+const _getUserAccount = async () => {
+  let address;
+  while(!address){
+    try {
+      address = await getUserAccount();
+    }catch (e) {
+
+    }
+    if(!address){
+      log("NO USER, retry", address);
+    }
+  }
+  return address;
+}
+
+_getUserAccount().then(address => {
+  if (address != null) {
+    userAddress = address
+    santa.userAddress = userAddress
+    maticNpc.userAddress = userAddress
+    connectSocket(address)
+  }
 }).catch(reason => {
   santa.showError(reason.toString())
 })
