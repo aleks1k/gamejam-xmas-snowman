@@ -92,13 +92,13 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         for (let i = 0; i < this.level; i++) {
             const points = []
             points[0] = this.snowmanSpawnPoint
-            for (let j = 1; j < LevelController.getRandomInt(3, 7 + (this.level * 2)); j++) {
+            for (let j = 1; j < LevelController.getRandomInt(3, 7 + ((this.level+3) * 2)); j++) {
                 points[j] = new Vector3(LevelController.getRandomInt(7, 11), 0, LevelController.getRandomInt(5, 24))
             }
             points.push(this.presentsTargetPoint)
             points.push(this.snowmanSpawnPoint)
             const myPath = new Path3D(points)
-            this.factory.add(myPath, this.level, this)
+            this.factory.add(myPath, this.level+3, this)
         }
         this.eventHandler.onNewLeve(this.level)
     }
@@ -118,7 +118,7 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
         this.stealPresents = 0
         this.ui.setPresentCount(this.stealMax - this.stealPresents)
         this.ui.score.set(0)
-        this.level = 5
+        this.level = 0
         this.ui.level.set(this.level)
         this.factory.reset()
         this.state = GameState.Strarted

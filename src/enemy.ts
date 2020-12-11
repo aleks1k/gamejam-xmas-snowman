@@ -1,4 +1,5 @@
 import utils from "../node_modules/decentraland-ecs-utils/index"
+import { EnemyFactory } from "./enemyFactory"
 
 import { PathData } from "./pathDataComponent"
 import { PatrolPath } from "./patrolPath"
@@ -27,9 +28,11 @@ export class Enemy extends Entity {
     stealPresent = false
     runAway = false
     private present: Entity;
+    factory: EnemyFactory
 
-    constructor(model: GLTFShape, path: Path3D, speed: number, handler: IEnemyEvent, needAddShootComponent) {
+    constructor(model: GLTFShape, path: Path3D, speed: number, handler: IEnemyEvent, needAddShootComponent, factory: EnemyFactory) {
         super()
+        this.factory = factory
         this.handler = handler
         this.isLive = true
         this.path = path
@@ -85,7 +88,7 @@ export class Enemy extends Entity {
                 if (this.isLive) this.kill('snowball')
             },
                 {
-                    button: ActionButton.ANY,
+                    button: ActionButton.POINTER,
                     showFeedback: false,
                     hoverText: "SHOOT",
                     distance: 100,
@@ -149,7 +152,7 @@ export class Enemy extends Entity {
                         source.playing = true
                         source.loop = false
                         source.volume = 1
-                        
+                        this.factory.reset()
                         engine.removeEntity(this.present)
                         this.removeComponent(GLTFShape)
                         this.handler.onStealPresentAndRunAway(this)

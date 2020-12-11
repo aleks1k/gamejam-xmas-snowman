@@ -30,7 +30,7 @@ export class EnemyFactory {
     }
 
     public add(path: Path3D, speed: number, handler:IEnemyEvent) {
-        let enemy = new Enemy(this.enemyShape, path, speed, handler, this.needAddShootComponent)
+        let enemy = new Enemy(this.enemyShape, path, speed, handler, this.needAddShootComponent, this)
         this.enemies.push(enemy)
         return enemy
     }

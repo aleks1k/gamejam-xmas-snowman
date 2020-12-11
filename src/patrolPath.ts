@@ -20,7 +20,7 @@ export class PatrolPath implements ISystem {
         }
         if (path.fraction < 1) {
             transform.position = Vector3.Lerp(path.origin, path.target, path.fraction)
-            if (this.speed > 10) this.speed = 9
+            if (this.speed > 10) this.speed = 7
             path.fraction += (dt / 3) * (this.speed / 6)
         } else {
             path.nextPathIndex += 1
