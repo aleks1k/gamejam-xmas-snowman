@@ -38,7 +38,7 @@ export class Enemy extends Entity {
         this.path = path
         this.addComponent(new Transform({
             // position: path.path[0],
-            scale: new Vector3(2, 2, 2)
+            scale: new Vector3(2.7, 2.7, 2.7)
         }))
 
         this.PatrolPath = new PatrolPath(this, this.path, speed)

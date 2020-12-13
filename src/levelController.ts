@@ -88,17 +88,18 @@ export class LevelController implements ISystem, IEnemyEvent, ISceneUIEvent {
     public nextLevel() {
         this.level++
         this.ui.level.set(this.level)
-
+        let difficult = this.level
         for (let i = 0; i < this.level; i++) {
             const points = []
             points[0] = this.snowmanSpawnPoint
-            for (let j = 1; j < LevelController.getRandomInt(3, 7 + ((this.level+3) * 2)); j++) {
+            if(difficult>6) difficult = 7
+            for (let j = 1; j < LevelController.getRandomInt(3, 7 + ((difficult+3) * 2)); j++) {
                 points[j] = new Vector3(LevelController.getRandomInt(7, 11), 0, LevelController.getRandomInt(5, 24))
             }
             points.push(this.presentsTargetPoint)
             points.push(this.snowmanSpawnPoint)
             const myPath = new Path3D(points)
-            this.factory.add(myPath, this.level+3, this)
+            this.factory.add(myPath, difficult+3, this)
         }
         this.eventHandler.onNewLeve(this.level)
     }
