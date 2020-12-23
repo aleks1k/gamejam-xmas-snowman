@@ -388,37 +388,3 @@ voting_stand.addComponent(
   )
 )
 voting_stand.setParent(static_scene)
-
-
-
-const myVideoClip = new VideoClip(
-  "textures/lotto.mp4"
-)
-
-// #2
-const myVideoTexture = new VideoTexture(myVideoClip)
-
-// #3
-const myMaterial = new BasicMaterial()
-myMaterial.texture = myVideoTexture
-
-// #4
-const screen = new Entity()
-screen.addComponent(new PlaneShape())
-screen.addComponent(
-  new Transform({
-    position: new Vector3(2.55,2.53,4.79),
-    rotation: Quaternion.Euler(0,-90,0),
-    scale: new Vector3(5.8,3.3,3),
-  })
-)
-screen.addComponent(myMaterial)
-screen.addComponent(
-  new OnPointerDown(() => {
-    myVideoTexture.playing = !myVideoTexture.playing
-  })
-)
-screen.setParent(static_scene)
-
-// #5
-myVideoTexture.playing = true
