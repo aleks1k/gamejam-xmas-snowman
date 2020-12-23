@@ -14,7 +14,7 @@ export class MaticNPC extends NPCBase {
             },
             image: this.ava
         },
-        {
+       /* {
             name: '1_1_start',
             text: 'Matic Network is a Layer 2 scaling solution for Ethereum using an adapted version of Plasma with PoS based side chains, achieving high throughput and free transactions.',
             triggeredByNext: () => {
@@ -125,6 +125,60 @@ export class MaticNPC extends NPCBase {
             text: `Fine, see you soon!`,
             isEndOfDialog: true,
             image: this.ava
+        },*/
+        {
+            name: 'end_1',
+            text: `It's the most wonderful time of the year!`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },
+        {
+            name: 'end_2',
+            text: `Tis the season to be jolly!`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },
+        {
+            name: 'end_3',
+            text: `Have yourself a Merry little Christmas, let your heart be light.`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },        
+        {
+            name: 'end_4',
+            text: `Yule always be my favourite.`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },        
+        {
+            name: 'end_5',
+            text: `Christmas is a very spiritual time - In your case vodka, gin and whisky`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },        
+        {
+            name: 'end_6',
+            text: `I only got you a card in case you got me one...`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },
+        {
+            name: 'end_7',
+            text: `Yay! It's Christmas! Let's buy loads of stuff no one needs!`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },
+        {
+            name: 'end_8',
+            text: `I bet yule be drunk this Christmas!`,
+            image: this.ava,
+            isEndOfDialog: true,
+        },
+        {
+            name: 'end_9',
+            text: `I'm so grateful for a friend like you, at Christmas and all year.`,
+            image: this.ava,
+            isEndOfDialog: true,
         },
         {
             name: 'error',
