@@ -392,7 +392,7 @@ voting_stand.setParent(static_scene)
 
 
 const myVideoClip = new VideoClip(
-  "textures/lotto.mp4"
+  "https://video.dcl.guru/live/anorak/index.m3u8"
 )
 
 // #2
