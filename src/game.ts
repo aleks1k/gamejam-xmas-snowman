@@ -393,6 +393,7 @@ voting_stand.setParent(static_scene)
 
 const myVideoClip = new VideoClip(
   "https://video.dcl.guru/live/anorak/index.m3u8"
+ //"https://theuniverse.club/live/consensys/index.m3u8"
 )
 
 // #2
@@ -409,7 +410,7 @@ screen.addComponent(
   new Transform({
     position: new Vector3(2.55,2.53,4.79),
     rotation: Quaternion.Euler(0,-90,0),
-    scale: new Vector3(5.8,3.3,3),
+    scale: new Vector3(-5.8,3.3,3),
   })
 )
 screen.addComponent(myMaterial)
