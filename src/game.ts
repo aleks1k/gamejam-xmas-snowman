@@ -409,7 +409,7 @@ screen.addComponent(
   new Transform({
     position: new Vector3(2.55,2.53,4.79),
     rotation: Quaternion.Euler(0,-90,0),
-    scale: new Vector3(5.8,3.3,3),
+    scale: new Vector3(-5.8,3.3,3),
   })
 )
 screen.addComponent(myMaterial)
